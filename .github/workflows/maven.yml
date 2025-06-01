@@ -32,9 +32,15 @@ jobs:
     - name: Build with Maven
       run: |
         mvn -B clean verify -DskipTests
-        mvn -B test
+        mvn -B test -Dtest=!BarrierOptionTest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Run failing tests separately
+      run: |
+        echo "Running failing tests separately..."
+        mvn -B test -Dtest=BarrierOptionTest
+      if: always()
     
     - name: Upload test results
       if: always()
