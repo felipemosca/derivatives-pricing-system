@@ -1,6 +1,8 @@
-# Maven
-target/
-!.mvn/wrapper/maven-wrapper.jar
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
 
 # VS Code
 .vscode/
@@ -17,3 +19,16 @@ target/
 # Arquivos de sistema
 .DS_Store
 Thumbs.db
+
+# Arquivos de configuração local
+local.properties
+
+# Arquivos gerados
+*.class
+**/build/
+**/out/
+**/bin/
+
+# Arquivos de configuração do Gradle
+!gradle-wrapper.jar
+!**/src/**/build/

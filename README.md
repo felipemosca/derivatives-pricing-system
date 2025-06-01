@@ -16,13 +16,24 @@ Sistema abrangente em Java para precificação e análise de derivativos finance
 - Implied Volatility Calculation / Cálculo de Volatilidade Implícita
 
 ## Prerequisites / Pré-requisitos
-- Java 17+
-- Maven
+- Java 21+
+- Gradle 8.5 ou superior
 
 ## Running the Application / Executando a Aplicação
+
+### Executando os testes
 ```bash
-mvn clean install
-mvn exec:java -Dexec.mainClass="com.financialengineering.DerivativesPricingApp"
+./gradlew test
+```
+
+### Executando a aplicação
+```bash
+./gradlew run
+```
+
+### Construindo o projeto
+```bash
+./gradlew build
 ```
 
 ## Key Components / Componentes Principais
