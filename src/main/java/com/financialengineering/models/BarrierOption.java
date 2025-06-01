@@ -10,9 +10,7 @@ public class BarrierOption extends OptionInstrument {
     private double knockOutBarrier;   // Knock-out barrier value (Hout)
     private final double rebate;            // Rebate value (R)
     private final int multiplier;
-    private final boolean isUpBarrier;
-    private final boolean isUpAndIn;
-    private int upDownIndicator;      // Up/Down indicator (η): 1 for up, -1 for down
+    private final int upDownIndicator;      // Up/Down indicator (η): 1 for up, -1 for down
     private final BarrierType barrierType;
     
     public enum BarrierType {
@@ -67,8 +65,8 @@ public class BarrierOption extends OptionInstrument {
                 throw new IllegalArgumentException("Invalid barrier type");
         }
         
-        this.isUpBarrier = barrier > spotPrice;
-        this.isUpAndIn = this.knockInBarrier > spotPrice;
+        // Determine if barrier is up or down based on indicator
+        // upDownIndicator is now used directly in isBarrierBreached
     }
     
     /**
@@ -79,15 +77,23 @@ public class BarrierOption extends OptionInstrument {
                         double multiplier, Double limitBarrier, Double knockInBarrier,
                         Double knockOutBarrier, double rebate, int upDownIndicator) {
         super(spotPrice, strikePrice, domesticRate, volatility, timeToMaturity, isCall, multiplier);
-        this.limitBarrier = limitBarrier;
-        this.knockInBarrier = knockInBarrier;
-        this.knockOutBarrier = knockOutBarrier;
+        
+        // Check for invalid barrier combinations
+        if ((limitBarrier == null && knockInBarrier == null && knockOutBarrier == null) ||
+            (limitBarrier != null && knockInBarrier != null && knockOutBarrier != null) ||
+            (limitBarrier != null && knockInBarrier != null && knockOutBarrier == null) ||
+            (limitBarrier != null && knockInBarrier == null && knockOutBarrier != null) ||
+            (limitBarrier == null && knockInBarrier != null && knockOutBarrier != null)) {
+            throw new IllegalStateException("Invalid barrier combination");
+        }
+        
+        this.limitBarrier = limitBarrier != null ? limitBarrier : 0.0;
+        this.knockInBarrier = knockInBarrier != null ? knockInBarrier : 0.0;
+        this.knockOutBarrier = knockOutBarrier != null ? knockOutBarrier : 0.0;
         this.rebate = rebate;
         this.upDownIndicator = upDownIndicator;
         this.multiplier = (int) multiplier;
         this.barrierType = BarrierType.KNOCK_IN_KNOCK_OUT;
-        this.isUpBarrier = knockOutBarrier > spotPrice;
-        this.isUpAndIn = knockInBarrier > spotPrice;
     }
     
     /**
@@ -95,22 +101,28 @@ public class BarrierOption extends OptionInstrument {
      */
     @Override
     public double calculatePrice() {
+        double price = 0.0;
+        
         if (limitBarrier > 0 && knockInBarrier == 0 && knockOutBarrier == 0) {
-            return calculateSimpleBarrierPrice();
+            price = calculateSimpleBarrierPrice();
         } else if (limitBarrier == 0 && knockInBarrier > 0 && knockOutBarrier == 0) {
-            return calculateKnockInPrice();
+            price = calculateKnockInPrice();
         } else if (limitBarrier == 0 && knockInBarrier == 0 && knockOutBarrier > 0) {
-            return calculateKnockOutPrice();
+            price = calculateKnockOutPrice();
         } else if (limitBarrier > 0 && knockInBarrier > 0 && knockOutBarrier == 0) {
-            return calculateSimpleKnockInPrice();
+            price = calculateSimpleKnockInPrice();
         } else if (limitBarrier > 0 && knockInBarrier == 0 && knockOutBarrier > 0) {
-            return calculateSimpleKnockOutPrice();
+            price = calculateSimpleKnockOutPrice();
         } else if (limitBarrier == 0 && knockInBarrier > 0 && knockOutBarrier > 0) {
-            return calculateKnockInKnockOutPrice();
+            price = calculateKnockInKnockOutPrice();
         } else if (limitBarrier > 0 && knockInBarrier > 0 && knockOutBarrier > 0) {
-            return calculateSimpleKnockInKnockOutPrice();
+            price = calculateSimpleKnockInKnockOutPrice();
+        } else {
+            throw new IllegalStateException("Invalid barrier combination");
         }
-        throw new IllegalStateException("Invalid barrier combination");
+        
+        // Ensure the price is not negative
+        return Math.max(0, price);
     }
     
     /**
@@ -118,10 +130,14 @@ public class BarrierOption extends OptionInstrument {
      * Uses the formula: PS(S, K, i, c, σ, T, φ, B)
      */
     private double calculateSimpleBarrierPrice() {
+        double vanillaPrice = calculateVanillaPrice();
         if (isBarrierBreached(spotPrice, limitBarrier)) {
-            return calculateVanillaPrice() * 0.95;
+            // If barrier is breached, return the vanilla price with a discount
+            return vanillaPrice * 0.95;
         }
-        return 0;
+        // If barrier is not breached, the option is worth the vanilla price minus the rebate
+        double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
+        return Math.max(0, vanillaPrice - discountedRebate);
     }
     
     /**
@@ -131,8 +147,10 @@ public class BarrierOption extends OptionInstrument {
     private double calculateKnockInPrice() {
         double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
         if (isBarrierBreached(spotPrice, knockInBarrier)) {
-            return calculateVanillaPrice();
+            // When barrier is breached, knock-in option becomes a vanilla option
+            return calculateVanillaPrice() - discountedRebate;
         }
+        // When barrier is not breached, return the discounted rebate
         return discountedRebate;
     }
     
@@ -143,9 +161,12 @@ public class BarrierOption extends OptionInstrument {
     private double calculateKnockOutPrice() {
         double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
         if (isBarrierBreached(spotPrice, knockOutBarrier)) {
+            // When barrier is breached, knock-out option is worth the rebate
             return discountedRebate;
         }
-        return calculateVanillaPrice();
+        // When barrier is not breached, knock-out option is worth the vanilla option minus the rebate
+        double vanillaPrice = calculateVanillaPrice();
+        return Math.max(0, vanillaPrice - discountedRebate);
     }
     
     /**
@@ -153,9 +174,21 @@ public class BarrierOption extends OptionInstrument {
      * Uses the formula: PS,Kin(S, K, i, c, σ, T, φ, B, H, R, η)
      */
     private double calculateSimpleKnockInPrice() {
+        double vanillaPrice = calculateVanillaPrice();
+        double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
+        
         if (isBarrierBreached(spotPrice, limitBarrier)) {
-            return calculateKnockInPrice();
+            // If the simple barrier is breached, the option becomes a knock-in option
+            if (isBarrierBreached(spotPrice, knockInBarrier)) {
+                // If knock-in barrier is also breached, the option is worth the vanilla price minus the rebate
+                return Math.max(0, vanillaPrice - discountedRebate);
+            } else {
+                // If knock-in barrier is not breached, the option is worth the rebate
+                return discountedRebate;
+            }
         }
+        
+        // If the simple barrier is not breached, the option is worthless
         return 0;
     }
     
@@ -164,9 +197,21 @@ public class BarrierOption extends OptionInstrument {
      * Uses the formula: PS,Kout(S, K, i, c, σ, T, φ, B, H, R, η)
      */
     private double calculateSimpleKnockOutPrice() {
+        double vanillaPrice = calculateVanillaPrice();
+        double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
+        
         if (isBarrierBreached(spotPrice, limitBarrier)) {
-            return calculateKnockOutPrice();
+            // If the simple barrier is breached, the option becomes a knock-out option
+            if (isBarrierBreached(spotPrice, knockOutBarrier)) {
+                // If knock-out barrier is also breached, the option is worth the rebate
+                return discountedRebate;
+            } else {
+                // If knock-out barrier is not breached, the option is worth the vanilla price minus the rebate
+                return Math.max(0, vanillaPrice - discountedRebate);
+            }
         }
+        
+        // If the simple barrier is not breached, the option is worthless
         return 0;
     }
     
@@ -177,25 +222,24 @@ public class BarrierOption extends OptionInstrument {
     private double calculateKnockInKnockOutPrice() {
         double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
         
-        // Se a barreira Knock-out foi atingida
+        // If knock-out barrier is breached, return the rebate
         if (isBarrierBreached(spotPrice, knockOutBarrier)) {
             return discountedRebate;
         }
         
-        // Se a barreira Knock-in foi atingida
+        // If knock-in barrier is breached, the option becomes a knock-out option
         if (isBarrierBreached(spotPrice, knockInBarrier)) {
-            return calculateKnockOutPrice();
+            // Create a new knock-out option with the same parameters
+            BarrierOption koOption = new BarrierOption(
+                spotPrice, strikePrice, domesticRate,
+                volatility, timeToMaturity, isCall, multiplier,
+                knockOutBarrier, rebate, upDownIndicator, BarrierType.KNOCK_OUT
+            );
+            return koOption.calculatePrice();
         }
         
-        // Se nenhuma barreira foi atingida e os indicadores são iguais
-        if (isUpBarrier == isUpAndIn) {
-            // PKin(S, K, i, c, σ, T, φ, Hin, R, ηin) - PKin(S, K+R×φ, i, c, σ, T, φ, Hout, 0, ηin)
-            // + PKin(S, K+R×φ, i, c, σ, T, -φ, Hout, 0, ηin) - PKin(S, K, i, c, σ, T, -φ, Hout, 0, ηin)
-            return calculateKnockInPrice() * 0.7;
-        } else {
-            // Se os indicadores são diferentes
-            return calculateKnockInPrice() * 0.5;
-        }
+        // If neither barrier is breached, the option is worth the discounted rebate
+        return discountedRebate;
     }
     
     /**
@@ -203,10 +247,31 @@ public class BarrierOption extends OptionInstrument {
      * Uses the formula: PS,Kin,Kout(S, K, i, c, σ, T, φ, B, Hin, Hout, R, ηin, ηout)
      */
     private double calculateSimpleKnockInKnockOutPrice() {
-        if (isBarrierBreached(spotPrice, limitBarrier)) {
-            return calculateKnockInKnockOutPrice();
+        double discountedRebate = rebate * Math.exp(-domesticRate * timeToMaturity);
+        
+        // First, check if the simple barrier is breached
+        if (!isBarrierBreached(spotPrice, limitBarrier)) {
+            return 0; // Option is worthless if simple barrier is not breached
         }
-        return 0;
+        
+        // If knock-out barrier is breached, return the rebate
+        if (isBarrierBreached(spotPrice, knockOutBarrier)) {
+            return discountedRebate;
+        }
+        
+        // If knock-in barrier is breached, the option becomes a knock-out option
+        if (isBarrierBreached(spotPrice, knockInBarrier)) {
+            // Create a new knock-out option with the same parameters
+            BarrierOption koOption = new BarrierOption(
+                spotPrice, strikePrice, domesticRate,
+                volatility, timeToMaturity, isCall, multiplier,
+                knockOutBarrier, rebate, upDownIndicator, BarrierType.KNOCK_OUT
+            );
+            return koOption.calculatePrice();
+        }
+        
+        // If neither knock-in nor knock-out barriers are breached, return the rebate
+        return discountedRebate;
     }
     
     /**
@@ -215,11 +280,14 @@ public class BarrierOption extends OptionInstrument {
     private double calculateVanillaPrice() {
         double d1 = calculateD1();
         double d2 = calculateD2();
-        double adjustment = Math.exp((costOfCarry - domesticRate) * timeToMaturity);
         
-        return multiplier * (isCall ? 
-               spotPrice * adjustment * normalCDF(d1) - strikePrice * Math.exp(-domesticRate * timeToMaturity) * normalCDF(d2) :
-               strikePrice * Math.exp(-domesticRate * timeToMaturity) * normalCDF(-d2) - spotPrice * adjustment * normalCDF(-d1));
+        if (isCall) {
+            return spotPrice * Math.exp((costOfCarry - domesticRate) * timeToMaturity) * normalCDF(d1) -
+                   strikePrice * Math.exp(-domesticRate * timeToMaturity) * normalCDF(d2);
+        } else {
+            return strikePrice * Math.exp(-domesticRate * timeToMaturity) * normalCDF(-d2) -
+                   spotPrice * Math.exp((costOfCarry - domesticRate) * timeToMaturity) * normalCDF(-d1);
+        }
     }
     
     /**
