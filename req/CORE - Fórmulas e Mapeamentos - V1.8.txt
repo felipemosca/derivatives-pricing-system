@@ -1,0 +1,4049 @@
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+CORE
+Closeout Risk Evaluation
+Fórmulas e Mapeamentos /
+Formulas and Mappings
+1
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Sumário
+1.
+Introdução / Introduction ............................................................................................................................ 3
+2.
+Fórmulas de Risco / Risk Formulas .......................................................................................................... 4
+3.
+
+4.
+
+5.
+
+2.1.
+
+Spot .................................................................................................................................................. 4
+2.2.
+
+Futuros / Futures ............................................................................................................................. 4
+2.3.
+
+Opções Padronizadas / Plain Vanilla Options ................................................................................ 12
+2.4.
+
+Swaps ............................................................................................................................................. 17
+2.5.
+
+Termos / Forwards ........................................................................................................................ 17
+2.6.
+
+Opções Flexíveis / Flexible Options ............................................................................................... 19
+2.7.
+
+Títulos Públicos e Privados / Corporate and Government Bonds ................................................. 21
+Fórmulas de Apreçamento / Pricing Formulas ................................................................................. 27
+3.1.
+
+Futuros / Futures ........................................................................................................................... 27
+3.2.
+
+Opções Padronizadas / Plain Vanilla Options ................................................................................ 31
+3.3.
+
+Swaps ............................................................................................................................................. 36
+3.4.
+
+Termos / Forwards ........................................................................................................................ 45
+3.5.
+
+Opções Flexíveis / Flexible Options ............................................................................................... 46
+3.6.
+
+Títulos Públicos e Privados / Corporate and Government Bonds ................................................. 54
+Fórmulas de Delta de Opções / Option Delta Formulas ................................................................. 58
+4.1.
+
+Opções Padronizadas / Plain Vanilla Options ................................................................................ 58
+4.2.
+
+Opções Flexíveis / Flexible Options ............................................................................................... 61
+Cálculo de Volatilidade de Opções / Options Volatility Calculation .......................................... 69
+5.1.
+
+6.
+
+Margem Mínima / Minimum Margin Call ............................................................................................ 72
+6.1.
+
+7.
+
+Volatilidade Implícita / Implied Volatility ...................................................................................... 69
+Margem Mínima de Opções / Option Minimum Margin Call........................................................ 72
+Fórmulas Auxiliares / Additional Formulas ....................................................................................... 77
+7.1.
+
+Distribuição Normal / Normal Distribution ................................................................................... 77
+7.2.
+
+Conversão de Taxas / Rate Conversion ......................................................................................... 80
+7.3.
+
+Interpolação / Interpolation .......................................................................................................... 81
+7.4.
+
+Barreira de Opções Flexíveis / Flexible Option Barrier .................................................................. 84
+2
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+1. Introdução / Introduction
+Este documento tem por objetivo fornecer as fórmulas de cálculo de risco e apreçamento utilizadas pelo CORE para
+estimação de risco de mercado de posições nos ativos cuja BM&FBOVESPA tem o papel de CCP, quais sejam: (i)
+ativos negociados em pregão; (ii) ativos aceitos como garantia; (iii) ativos negociados no mercado de balcão (OTC).
+Nas fórmulas especificadas as variáveis destacadas em azul negrito são Fatores Primitivos de Risco.
+Os valores dos parâmetros dos Fatores Primitivos de Risco são disponibilizados diariamente pela BM&FBOVESPA
+através do arquivo Fatores Primitivos de Risco.
+The document provides the risk calculation and pricing formulas used by CORE to estimate the market risk of instruments for which BM&FBOVESPA offers central counterparty services: (i) listed contracts; (ii) assets posted as collateral;
+(iii) OTC contracts.
+In these formulas the bold blue variables represent Primitive Risk Factors.
+The values for the Primitive Risk Factors parameters are daily provided by BM&FBOVESPA in Primitive Risk Factor file.
+
+3
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+2. Fórmulas de Risco / Risk Formulas
+2.1.
+
+Spot
+a) Risco de ativos a vista (90)
+Spot Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑆𝑡
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do ativo a vista no dia t [spot market risk];
+𝑺𝒕 : Preço a vista do ativo no dia t [underlying];
+b) Risco de ativos a vista negociados no exterior (91)
+Foreign Traded Spot Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑆𝑡
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do ativo a vista no dia t [spot market risk];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺𝒕 : Preço a vista do ativo no dia t [underlying];
+2.2.
+
+Futuros / Futures
+c) Risco de contratos futuros de taxa de câmbio (1)
+Exchange Rate Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝑇𝐶 (𝑆𝑡 ; 𝑖𝑡 ; 𝑐𝑡 ) − 𝐹𝑇𝐶 (𝑆𝑡−1 ; 𝑖𝑡−1 ; 𝑐𝑡−1 )) × 𝑀 × 𝑁
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑇𝐶 (. ): Fórmula para apreçamento de contratos futuros de taxa de câmbio [exchange rate future value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+d) Risco de contratos futuros de taxa de câmbio composta (relação direta) (2)
+4
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Composed Exchange Rate Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝑇𝐶𝐶 (𝑆𝑡 ; 𝐻𝑡 ; 𝑖𝑡 ; 𝑐𝑡 ; 𝑠𝑡 ) − 𝐹𝑇𝐶𝐶 (𝑆𝑡−1 ; 𝐻𝑡−1 ; 𝑖𝑡−1 ; 𝑐𝑡−1 ; 𝑠𝑡−1 )) × 𝑀 × 𝑁
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑇𝐶𝐶 (. ): Fórmula para apreçamento de contratos futuros de taxa de câmbio composta [composed exchange
+rate future value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝒔𝒕 : Spread entre o custo de carregamento da taxa de câmbio com a taxa auxiliar no dia t, ao período e em fator, para o prazo do contrato [spread];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+e) Risco de contratos futuros de taxa de câmbio composta (relação inversa) (3)
+Inverse Composed Exchange Rate Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝑇𝐶𝐼 (𝑆𝑡 ; 𝐻𝑡 ; 𝑖𝑡 ; 𝑐𝑡 ; 𝑠𝑡 ) − 𝐹𝑇𝐶𝐼 (𝑆𝑡−1 ; 𝐻𝑡−1 ; 𝑖𝑡−1 ; 𝑐𝑡−1 ; 𝑠𝑡−1 )) × 𝑀 × 𝑁
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑇𝐶𝐼 (. ): Fórmula para apreçamento de contratos futuros de taxa de câmbio composta – relação inversa [inverse composed exchange rate future value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝒔𝒕 : Spread entre o custo de carregamento da taxa de câmbio com a taxa auxiliar no dia t, ao período e em fator, para o prazo do contrato [spread];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+f)
+Risco de contratos futuros de ouro (4)
+Gold Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝑂 (𝑆𝑡 ; 𝑖𝑡 ) − 𝐹𝑂 (𝑆𝑡−1 ; 𝑖𝑡−1 )) × 𝑀 × 𝑁
+5
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑂 (. ): Fórmula para apreçamento de contratos futuros de ouro [gold future value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+g) Risco de contratos futuros de dívida externa (5)
+Foreign Bond Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × (𝐹𝐷𝐸 (𝑆𝑡 ; 𝑐𝑡 ) − 𝐹𝐷𝐸 (𝑆𝑡−1 ; 𝑐𝑡−1 )) × 𝑀 × 𝑁
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐷𝐸 (. ): Fórmula para apreçamento de contratos futuros de dívida externa [foreign bond future value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+h) Risco de contratos futuros de taxa de juro – DI1 (6)
+DI1 Interest Rate Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝐷𝐼 (𝑁; 𝑖𝑡 ) −
+𝑆𝑡
+× 𝐹𝐷𝐼 (𝑁; 𝑖𝑡−1 )) × 𝑀
+𝑆𝑡−1
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐷𝐼 (. ): Fórmula para apreçamento de contratos futuros de DI1 [DI1 interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝑺𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+i)
+Risco de contratos futuros de taxa de juro – OC1 (16)
+OC1 Interest Rate Future Risk Evaluation
+6
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑅𝑀𝑡 (. ) = (𝐹𝑂𝐶 (𝑁; 𝑖𝑡 ; 𝑠𝑡 ) −
+𝐼𝑡
+𝐼𝑡−1
+×
+𝑆𝑡
+× 𝐹𝑂𝐶 (𝑁; 𝑖𝑡−1 ; 𝑠𝑡−1 )) × 𝑀
+𝑆𝑡−1
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑂𝐶 (. ): Fórmula para apreçamento de contratos futuros de OC1 [OC1 interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒔𝒕 : Spread entre a taxa de juro interna livre de risco com a taxa objeto do contrato no dia t, ao período e em
+fator, para o prazo do contrato [spread];
+𝑰𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑺𝒕 : Índice do spread entre a taxa de juro interna livre de risco com a taxa objeto do contrato apurado no dia t
+[spread index];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+j)
+Risco de contratos futuros de cupom cambial – DDI (7)
+Foreign Interest Rate Future Risk Evaluation – DDI
+𝑅𝑀𝑡 (. ) = (𝐻𝑡 × 𝐹𝐶𝐶 (𝑁; 𝑐𝑡 ) − 𝐻𝑡−1 ×
+𝑆𝑡
+× 𝐹𝐶𝐶 (𝑁; 𝑐𝑡−1 )) × 𝑀
+𝑆𝑡−1
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐶𝐶 (. ): Fórmula para apreçamento de contratos futuros de cupom cambial DDI [DDI foreign interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑺𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+k) Risco de contratos futuros de swap de cupom cambial – SCC (13)
+Swap Foreign Interest Rate Future Risk Evaluation – SCC
+Se Data-Base < Data-Atual (𝑇0 < 0):
+If Base-Date < Current Date (𝑇0 < 0):
+𝑅𝑀𝑡 (. ) = (𝐻𝑡 × 𝐹𝑆𝐶𝐶 (𝑁; 𝑐𝑡 ) − 𝐻𝑡−1 ×
+𝑆𝑡
+𝑆𝑡
+× 𝐹𝑆𝐶𝐶 (𝑁; 𝑐𝑡−1 )) ×
+×𝑀
+𝑆𝑡−1
+𝑆𝑡−1
+Se Data-Base ≥ Data-Atual (𝑇0 ≥ 0):
+If Base-Date ≥ Current Date (𝑇0 ≥ 0):
+7
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑐
+𝐻
+𝑅𝑀𝑡 (. ) = (𝐹𝑆𝐶𝐶 (𝑁; 𝑡⁄𝑐𝑡 ) − 𝐹𝑆𝐶𝐶 (𝑁; 𝑐𝑠𝑡𝑎𝑟𝑡 )) × ( 𝑡⁄𝑐𝑡 ) × 𝑀
+0
+0
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑆𝐶𝐶 (. ): Fórmula para apreçamento de contratos futuros de swap de cupom cambial SCC [SCC foreign interest
+rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑺𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝒄𝒕0 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo da data de início de
+valorização [underlying foreign interest rate];
+𝑐𝑠𝑡𝑎𝑟𝑡 : Cupom cambial negociado em leilão, ao período e em fator, para o prazo entre a data de início de valorização e o vencimento do contrato (𝑇 − 𝑇0 ) [start foreign interest rate];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑇0 : Prazo para a data de início de valorização, em dias de saque [position date maturity].
+
+l)
+Risco de contratos futuros de cupom cambial – DCO (17)
+Foreign Interest Rate Future Risk Evaluation – DCO
+𝑅𝑀𝑡 (. ) = (𝐻𝑡 × 𝐹𝐷𝐶 (𝑁; 𝑐𝑡 ; 𝑠𝑡 ) − 𝐻𝑡−1 ×
+𝐼𝑡
+𝐼𝑡−1
+×
+𝑆𝑡
+× 𝐹𝐷𝐶 (𝑁; 𝑐𝑡−1 ; 𝑠𝑡−1 )) × 𝑀
+𝑆𝑡−1
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐷𝐶 (. ): Fórmula para apreçamento de contratos futuros de cupom cambial DCO [DCO foreign interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑰𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑺𝒕 : Índice do spread entre a taxa de juro interna livre de risco com a taxa objeto do contrato apurado no dia t
+[spread index];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝒔𝒕 : Spread entre o cupom cambial DI com o cupom objeto do contrato no dia t, ao período e em fator, para o
+prazo do contrato [spread];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+m) Risco de contratos futuros de swap de cupom cambial – SCS (18)
+Swap Foreign Interest Rate Future Risk Evaluation – SCS
+Se Data-Base < Data-Atual (𝑇0 < 0):
+8
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+If Base-Date < Current Date (𝑇0 < 0):
+𝑅𝑀𝑡 (. ) = (𝐻𝑡 × 𝐹𝑆𝐶𝑆 (𝑁; 𝑐𝑡 ; 𝑠𝑡 ) − 𝐻𝑡−1 ×
+𝐼𝑡
+𝐼𝑡−1
+×
+𝑆𝑡
+𝐼𝑡
+𝑆𝑡
+× 𝐹𝑆𝐶𝑆 (𝑁; 𝑐𝑡−1 ; 𝑠𝑡−1 )) ×
+×
+×𝑀
+𝑆𝑡−1
+𝐼𝑡−1 𝑆𝑡−1
+Se Data-Base ≥ Data-Atual (𝑇0 ≥ 0):
+If Base-Date ≥ Current Date (𝑇0 ≥ 0):
+𝐻𝑡
+𝑐
+𝑠
+𝑅𝑀𝑡 (. ) = (𝐹𝑆𝐶𝑆 (𝑁; 𝑡⁄𝑐𝑡 ; 𝑡⁄𝑠𝑡 ) − 𝐹𝑆𝐶𝐶 (𝑁; 𝑐𝑠𝑡𝑎𝑟𝑡 )) × (
+)×𝑀
+0
+0
+𝑐𝑡0 × 𝑠𝑡0
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝑆𝐶𝑆 (. ): Fórmula para apreçamento de contratos futuros de swap de cupom cambial SCS [SCS foreign interest
+rate future value];
+𝐹𝑆𝐶𝐶 (. ): Fórmula para apreçamento de contratos futuros de swap de cupom cambial SCC [SCC foreign interest
+rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑰𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑺𝒕 : Índice do spread entre a taxa de juro interna livre de risco com a taxa objeto do contrato apurado no dia t
+[spread index];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝒄𝒕0 : Cupom cambial objeto do contrato futuro no dia t, ao período e em fator, para o prazo da data de início de
+valorização [underlying foreign interest rate];
+𝒔𝒕 : Spread entre o cupom cambial DI com o cupom objeto do contrato no dia t, ao período e em fator, para o
+prazo do contrato [spread];
+𝒔𝒕0 : Spread entre o cupom cambial DI com o cupom objeto do contrato no dia t, ao período e em fator, para o
+prazo da data de início de valorização do contrato [spread];
+𝑐𝑠𝑡𝑎𝑟𝑡 : Cupom cambial negociado em leilão, ao período e em fator, para o prazo entre a data de início de valorização e o vencimento do contrato (𝑇 − 𝑇0 ) [start foreign interest rate];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑇0 : Prazo para a data de início de valorização, em dias de saque [trading start maturity].
+
+n) Risco de contratos futuros de índice (8)
+Index Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝐼𝑋 (𝑆𝑡 ; 𝑖𝑡 ; 𝑐𝑡 ) − 𝐹𝐼𝑋 (𝑆𝑡−1 ; 𝑖𝑡−1 ; 𝑐𝑡−1 )) × 𝑀 × 𝑁
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐼𝑋 (. ): Fórmula para apreçamento de contratos futuros de índice [index future value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato futuro no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+9
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+o) Risco de contratos futuros de cupom de inflação (9)
+Inflation Interest Rate Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝐶𝐼 (𝑁; 𝐼𝑡 ; 𝑐𝑡 ) −
+𝑆𝑡
+× 𝐹𝐶𝐼 (𝑁; 𝐼𝑡−1 ; 𝑐𝑡−1 )) × 𝑀
+𝑆𝑡−1
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐶𝐼 (. ): Fórmula para apreçamento de contratos futuros de cupom de inflação [inflation interest rate future
+value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑺𝒕 : Índice sobre a taxa de juro interna livre de risco apurado no dia t [spot index];
+𝑰𝒕 : Índice de inflação pro rata no dia t [pro rata inflation index];
+𝒄𝒕 : Cupom de inflação objeto do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+p) Risco de contratos futuros com base em curvas Forward (10)
+Forward Based Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝐹𝑊 (𝑣𝑡 ) − 𝐹𝐹𝑊 (𝑣𝑡−1 )) × 𝑀
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐹𝑊 (. ): Fórmula para apreçamento de contratos futuros baseados em forward [forward based future value];
+𝒗𝒕 : Valor obtido de uma curva forward de preços no dia t, para o prazo do contrato [forward value];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+q) Risco de contratos futuros com base em curvas Forward com spread (12)
+Forward-Spread Based Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = (𝐹𝐹𝑆 (𝑣𝑡 ; 𝑠𝑡 ) − 𝐹𝐹𝑆 (𝑣𝑡−1 ; 𝑠𝑡−1 )) × 𝑀
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐹𝑆 (. ): Fórmula para apreçamento de contratos futuros baseados em forward com spread [forward based future value];
+𝒗𝒕 : Valor obtido de uma curva forward de preços no dia t, para o prazo do contrato [forward value];
+10
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝒔𝒕 : Spread de forward do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [spread];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+r) Risco de contratos futuros com base em curvas Forward em moeda estrangeira (11)
+Forward Exchange Rate Based Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × (𝐹𝐹𝑊 (𝑣𝑡 ) − 𝐹𝐹𝑊 (𝑣𝑡−1 )) × 𝑀
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐹𝑊 (. ): Fórmula para apreçamento de contratos futuros baseados em forward [forward based future value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒗𝒕 : Valor obtido de uma curva forward de preços no dia t, para o prazo do contrato [forward value];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+s) Risco de contratos futuros com base em curvas Forward com spread em moeda estrangeira (15)
+Forward-Spread Exchange Rate Based Future Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × (𝐹𝐹𝑆 (𝑣𝑡 ; 𝑠𝑡 ) − 𝐹𝐹𝑆 (𝑣𝑡−1 ; 𝑠𝑡−1 )) × 𝑀
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝐹𝐹𝑆 (. ): Fórmula para apreçamento de contratos futuros baseados em forward com spread [forward-spread
+based future value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒗𝒕 : Valor obtido de uma curva forward de preços no dia t, para o prazo do contrato [forward value];
+𝒔𝒕 : Spread de forward do contrato futuro no dia t, ao período e em fator, para o prazo do contrato [spread];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+t) Risco de contratos padronizados a termo de metais (19)
+Metal Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑀 (𝑁; 𝑆𝑡 ; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑖𝑡 ) × 𝑀
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato futuro no dia t [future market risk];
+𝑃𝑀 (. ): Fórmula de cálculo do MtM do contrato a termo em metais [non-deliverable forward MtM];
+𝑁: Unidade de apregoação do contrato [trading reference quantity];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [interest rate];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+11
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+2.3.
+
+Opções Padronizadas / Plain Vanilla Options
+a) Risco de contratos de opção precificados pelo modelo Garman (60)
+Garman Option Risk Evaluation
+𝑅𝑀𝑡 (. ) = {
+𝑃𝐺 (𝑆𝑡 × 𝑁; 𝐾; 𝑖𝑡 ; 𝑐𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0)
+𝑃𝐼 (𝑆𝑡 × 𝑁; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐺 (. ): Prêmio da opção calculado pelo modelo Garman [Garman option pricing];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t – taxa continuamente composta [cost of carry];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+b) Risco de contratos de opção com ajuste precificados pelo modelo Garman (67)
+Future-Style Garman Option Risk Evaluation
+𝑅𝑀𝑡 (. )
+(𝑃𝐺 (𝑆𝑡 × 𝑁; 𝐾; 0; 𝑐𝑡 − 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑) − 𝑃𝐺 (𝑆𝑡−1 × 𝑁; 𝐾; 0; 𝑐𝑡−1 − 𝑖𝑡−1 ; 𝜎𝑡−1 ; 𝑑𝑠𝑡−1 ; 𝜑)) × 𝑀,
+se (𝑑𝑠𝑡 > 0)
+={
+(𝑃𝐼 (𝑆𝑡 × 𝑁; 𝐾; 𝜑) − 𝑃𝐺 (𝑆𝑡−1 × 𝑁; 𝐾; 0; 𝑐𝑡−1 − 𝑖𝑡−1 ; 𝜎𝑡−1 ; 𝑑𝑠𝑡−1 ; 𝜑)) × 𝑀,
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐺 (. ): Prêmio da opção calculado pelo modelo Garman [Garman option pricing];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t – taxa continuamente composta [cost of carry];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier];
+𝑁: Unidade de apregoação do contrato [trading reference quantity].
+
+c) Risco de contratos de opção precificados pelo modelo Black & Scholes (61)
+12
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Black & Scholes Option Risk Evaluation
+𝑃 (𝑆 ; 𝐾; 𝑖𝑡 ; 0; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0)
+𝑅𝑀𝑡 (. ) = { 𝐺 𝑡
+𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐺 (. ): Prêmio da opção calculado pelo modelo Garman [Garman option pricing];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato ou Fator de Cotação [contract multiplier/price factor].
+
+d) Risco de contratos de opção precificados pelo modelo Black & Scholes com spread (70)
+Black & Scholes Spread Option Risk Evaluation
+𝑅𝑀𝑡 (. ) = {
+𝑃𝐺 (𝑆𝑡 × 𝐼𝑡 ; 𝐾; 𝑖𝑡 ; 0; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0)
+𝑃𝐼 (𝑆𝑡 × 𝐼𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐺 (. ): Prêmio da opção calculado pelo modelo Garman [Garman option pricing];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝑰𝒕 : Índice do spread entre a taxa de juro interna livre de risco com a taxa objeto do contrato apurado no dia t
+[spread index];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+e) Risco de contratos de opção sobre futuros precificados pelo modelo Black (62)
+Black Option on Future Risk Evaluation
+𝑃 (𝐹 ; 𝐾; 𝑖′𝑡 ; 𝑖′𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0)
+𝑅𝑀𝑡 (. ) = { 𝐺 𝑡
+𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 = 0)
+𝐹𝑡 = 𝐹(𝑆𝑡 ; 𝑖𝑡 ; 𝑐𝑡 )
+13
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐺 (. ): Prêmio da opção calculado pelo modelo Garman [Garman option pricing];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future Value];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊′𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+f)
+Risco de contratos de opção sobre futuro de DI precificados pelo modelo Black modificado (63)
+Black DI Option Risk Evaluation
+𝑖
+𝑃 (𝐹 ; 𝐾 ; 𝑁; 𝑘⁄100 ; 𝜎; 𝑇𝑑𝑐,𝑜 ; 𝑇𝑑𝑐,𝑓 ; 𝑇𝑑𝑠,𝑜 ; 𝑇𝑑𝑠,𝑓 ; 𝜑) ,
+𝑅𝑀𝑡 (. ) = { 𝐷𝐼 𝑡 𝑡
+𝑃𝐼 (𝑋𝑡 ; 𝐹𝑡 ; 𝜑),
+se (𝑑𝑠𝑡 = 0)
+se (𝑑𝑠𝑡 > 0)
+𝐹𝑡 = 𝐹𝐷𝐼 (𝑁; 𝑖𝑓,𝑡 )
+𝐾𝑡 = 𝐹𝐷𝐼 (𝑁; 𝑖𝑜,𝑡 )
+𝑋𝑡 = 𝐹𝐷𝐼 (𝑁; 𝑖𝑘′ )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐷𝐼 (. ): Prêmio da opção calculado pelo modelo Black modificado [option value];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝐹𝐷𝐼 (. ): Fórmula de apreçamento de contratos futuros de DI1 [DI1 future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑖𝑘 : Taxa de juro de exercício da opção, em percentual [strike interest rate];
+𝑖𝑘′ : Taxa de juro de exercício da opção, ao período e em fator, para o prazo do contrato futuro objeto [strike
+interest rate];
+𝒊𝒐,𝒕 : Taxa de juro interna livre de risco, ao período e em fator, para o prazo do contrato [domestic interest
+rate];
+𝒊𝒇,𝒕 : Taxa de juro interna livre de risco, ao período e em fator, para o prazo do contrato futuro objeto [underlying interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑐𝑜,𝑡 : Número de dias corridos para o vencimento da opção [calendar days to maturity];
+14
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑑𝑐𝑓,𝑡 : Número de dias corridos para o vencimento do futuro objeto [underlying calendar days to maturity];
+𝑑𝑠𝑜,𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑑𝑠𝑓,𝑡 : Número de dias de saque para o vencimento do futuro objeto [underlying reserve days to maturity].
+
+g) Risco de contratos de opção americana (64)
+American Option Risk Evaluation
+𝑃𝐴 (𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑐𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑅𝑀𝑡 (. ) = {𝑃𝐴 (𝐾; 𝑆𝑡 ; 𝑐𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0 e 𝜑 = 1)
+se (𝑑𝑠𝑡 > 0 e 𝜑 = −1)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐴 (. ): Prêmio da opção calculado pelo modelo Haug para opções americanas [option value];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝐾: Preço de exercício [strike];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t – taxa continuamente composta [cost of carry];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+h) Risco de contratos de opção americana sobre futuros baseados em forward (65)
+American Option on Forward-Based Future Risk Evaluation
+𝑃𝐴 (𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑅𝑀𝑡 (. ) = {𝑃𝐴 (𝐾; 𝑆𝑡 ; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0 e 𝜑 = 1)
+se (𝑑𝑠𝑡 > 0 e 𝜑 = −1)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐴 (. ): Prêmio da opção calculado pelo modelo Haug para opções americanas [option value];
+𝑃𝐼 : Prêmio da opção no vencimento [intrinsic option value];
+𝐾: Preço de exercício [strike];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+15
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+i)
+Risco de contratos de opção americana sobre futuros baseados em forward negociados em moeda
+estrangeira (69)
+American Option on Forward Based Future in Foreign Currency Risk Evaluation
+𝐻𝑡 × 𝑃𝐴 (𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑅𝑀𝑡 (. ) = {𝐻𝑡 × 𝑃𝐴 (𝐾; 𝑆𝑡 ; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝐻𝑡 × 𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0 e 𝜑 = 1)
+se (𝑑𝑠𝑡 > 0 e 𝜑 = −1)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐴 (. ): Prêmio da opção calculado pelo modelo Haug para opções americanas [option value];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝐾: Preço de exercício [strike];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+𝑀: Multiplicador do contrato [contract multiplier].
+
+j)
+Risco de contratos de opção americana sobre futuros (68)
+American Option on Future Risk Evaluation
+𝑃𝐴 (𝑆𝑡 ; 𝐾; 𝑖′𝑡 ; 𝑖′𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑅𝑀𝑡 (. ) = {𝑃𝐴 (𝐾; 𝑆𝑡 ; 𝑖′𝑡 ; 𝑖′𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ) × 𝑀,
+𝑃𝐼 (𝑆𝑡 ; 𝐾; 𝜑) × 𝑀,
+se (𝑑𝑠𝑡 > 0 e 𝜑 = 1)
+se (𝑑𝑠𝑡 > 0 e 𝜑 = −1)
+se (𝑑𝑠𝑡 = 0)
+𝐹𝑡 = 𝐹(𝑆𝑡 ; 𝑖𝑡 ; 𝑐𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐴 (. ):Prêmio da opção calculado pelo modelo Haug para opções americanas [option value];
+𝑃𝐼 (. ): Prêmio da opção no vencimento [intrinsic option value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future Value];
+𝐾: Preço de exercício [strike];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝒊′𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [underlying foreign interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity];
+16
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑀: Multiplicador do contrato [contract multiplier].
+
+2.4.
+
+Swaps
+a) Risco de contratos de swap
+Swap Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝐴,𝑡 − 𝑃𝑃,𝑡
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de swap no dia t [swap market risk];
+𝑃𝐴,𝑡 : MtM da ponta ativa de um swap no dia t [swap active leg MtM]*;
+𝑃𝑃,𝑡 : MtM da ponta passiva de um swap no dia t [swap passive leg MtM]*.
+*Para os swaps, os FPRs estão definidos nas fórmulas de MtM de cada ponta (ver Fórmulas de Apreçamento)
+*Swaps related Primitive Risk Factors are described on MtM formulas of each side (see Pricing Formulas)
+2.5.
+
+Termos / Forwards
+a) Risco de contratos a termo em metais (151)
+Metal Non-deliverable Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑀 (𝑁; 𝑆𝑡 ; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑖𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato a termo no dia t [non-deliverable forward market risk];
+𝑃𝑀 (. ): Fórmula de cálculo do MtM do contrato a termo em metais [non-deliverable forward MtM];
+𝑁: Valor nocional do título [notional];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [interest rate].
+
+b) Risco de contratos a termo em taxa de câmbio (152)
+Exchange Rate Non-deliverable Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑇𝐶 (𝑁; 𝑆𝑡 ; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑖𝑡 ; 𝑐𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato a termo no dia t [non-deliverable forward market risk];
+𝑃𝑇𝐶 (. ): Fórmula de cálculo do MtM do contrato a termo em taxa de câmbio [non-deliverable forward MtM];
+𝑁: Valor nocional do título [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+17
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry].
+
+c) Risco de contratos a termo em taxa de câmbio composta – relação direta (153)
+Composed Exchange Rate Non-deliverable Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑇𝐶𝐶 (𝑁; 𝑆𝑡 ; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑐𝑡 ; 𝑠𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato a termo no dia t [non-deliverable forward market risk];
+𝑅𝐸𝑡 (. ): Risco calculado para otimização de encerramento do contrato a termo no dia t [non-deliverable forward closeout risk];
+𝑃𝑇𝐶𝐶 (. ): Fórmula de cálculo do MtM do contrato a termo em taxa de câmbio composta [non-deliverable forward MtM];
+𝑁: Valor nocional do título [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝒔𝒕 : Spread entre o custo de carregamento da taxa de câmbio com a taxa auxiliar no dia t, ao período e em fator, para o prazo do contrato [spread].
+
+d) Risco de contratos a termo em taxa de câmbio composta – relação inversa (154)
+Inverse Composed Exchange Rate Non-deliverable Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑇𝐶𝐼 (𝑁; 𝑆𝑡 ; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑐𝑡 ; 𝑠𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato a termo no dia t [non-deliverable forward market risk];
+𝑃𝑇𝐶𝐼 (. ): Fórmula de cálculo do MtM do contrato a termo em taxa de câmbio composta inversa [non-deliverable forward MtM];
+𝑁: Valor nocional do título [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t, ao período e em fator, para o prazo do contrato [cost of
+carry];
+𝒔𝒕 : Spread entre o custo de carregamento da taxa de câmbio com a taxa auxiliar no dia t, ao período e em fator, para o prazo do contrato [spread].
+
+e) Risco de contratos a termo de ações (155)
+18
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Equity Forward Risk Evaluation
+𝑅𝑀𝑡 (. ) = min(𝑆𝑠𝑡𝑎𝑟𝑡 − 𝑆𝑡 × 𝑖𝑡 ; 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato a termo no dia t [equity forward market risk];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato a termo no dia t [underlying];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [interest rate].
+
+f)
+Risco de contratos de empréstimo de ações (156)
+Equity Lending Risk Evaluation
+𝑅𝑡 (. ) = 𝑆𝑠𝑡𝑎𝑟𝑡 × ((1 + 𝑟)(𝐻+𝑇)⁄252 − 1)
+Onde:
+𝑅𝑡 (. ): Risco do contrato de empréstimo no dia t [equity forward market risk];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes no contrato de empréstimo [start underlying value];
+𝑟: Taxa do contrato de empréstimo [equity lending interest rate];
+𝐻: Prazo em dias úteis entre o registro do contrato e a data de referência [elapsed period];
+𝑇: Prazo em dias úteis entre a data de referência e a data de carência ou vencimento [maturity];
+𝑣𝑒𝑛𝑐𝑖𝑚𝑒𝑛𝑡𝑜,
+se não antecipável e tomador descoberto
+𝑇 = {min(max(𝑐𝑎𝑟𝑒𝑛𝑐𝑖𝑎 + 1; 𝐻𝑃𝑀𝑖𝑛) + 𝐷𝑒𝑠𝑙𝑜𝑐(𝑎𝑡. 𝑜𝑏𝑗𝑒𝑡𝑜); 𝑣𝑒𝑛𝑐) se antecipável e tomador descoberto
+min(max(𝑐𝑎𝑟𝑒𝑛𝑐𝑖𝑎 + 1; 𝐻𝑃𝑀𝑖𝑛) ; 𝑣𝑒𝑛𝑐) ,
+demais casos
+2.6.
+
+Opções Flexíveis / Flexible Options
+a) Risco de contratos de opção flexível precificados pelo modelo Garman (181)
+Garman Flexible Option Risk Evaluation
+𝑃 (𝑁; 𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑐𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑; Θ),
+𝑅𝑀𝑡 (. ) = { 𝐹𝑙𝑒𝑥
+𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝜑; Θ),
+se (𝑑𝑠𝑡 > 0)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐹𝑙𝑒𝑥 (. ): Fórmula Geral para apreçamento de opções flexíveis [flexible option pricing];
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção no vencimento [flexible option intrinsic value];
+𝑁: Valor nocional do contrato [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t – taxa continuamente composta [cost of carry];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+19
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Θ: Conjunto de parâmetros de opções flexíveis [flexible options parameters];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity].
+
+b) Risco de contratos de opção flexível de taxa de câmbio composta – Garman (relação direta) (185)
+Garman Composed Exchange Rate Flexible Option Risk Evaluation
+𝑅𝑀𝑡 (. ) = {
+𝑃𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 × 𝐻𝑡 ; 𝐾; 𝑖𝑡 ; 𝑐𝑡 + 𝑠𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑; Θ), se (𝑑𝑠𝑡 > 0)
+𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 × 𝐻𝑡 ; 𝐾; 𝜑; Θ),
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐹𝑙𝑒𝑥 (. ): Fórmula Geral para apreçamento de opções flexíveis [flexible option pricing];
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção no vencimento [flexible option intrinsic value];
+𝑁: Valor nocional do contrato [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto no dia t – taxa continuamente composta [cost of carry];
+𝒔𝒕 : Spread entre o custo de carregamento da taxa de câmbio com a taxa auxiliar no dia t – taxa continuamente
+composta [spread];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible options parameters];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity].
+
+c) Risco de contratos de opção flexível precificados pelo modelo Black & Scholes (182)
+Black & Scholes Flexible Option Risk Evaluation
+𝑃 (𝑁; 𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 0; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑; Θ),
+𝑅𝑀𝑡 (. ) = { 𝐹𝑙𝑒𝑥
+𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝜑; Θ),
+se (𝑑𝑠𝑡 > 0)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐹𝑙𝑒𝑥 (. ): Fórmula Geral para apreçamento de opções flexíveis [flexible option pricing];
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção no vencimento [flexible option intrinsic value];
+𝑁: Valor nocional do contrato [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible options parameters];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity].
+
+20
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+d) Risco de contratos de opção flexível precificados pelo modelo Black (183)
+Black Flexible Option Risk Evaluation
+𝑅𝑀𝑡 (. ) = {
+𝑃𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑; Θ), se (𝑑𝑠𝑡 > 0)
+𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝜑; Θ),
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐹𝑙𝑒𝑥 (. ): Fórmula Geral para apreçamento de opções flexíveis [flexible option pricing];
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção no vencimento [flexible option intrinsic value];
+𝑁: Valor nocional do contrato [notional];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible options parameters];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity].
+
+e) Risco de contratos de opção flexível precificados pelo modelo Black em moeda estrangeira (184)
+Black Flexible Option in Foreign Currency Risk Evaluation
+𝐻 × 𝑃𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝑖𝑡 ; 𝑖𝑡 ; 𝜎𝑡 ; 𝑑𝑠𝑡 ; 𝜑; Θ),
+𝑅𝑀𝑡 (. ) = { 𝑡
+𝐻𝑡 × 𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆𝑡 ; 𝐾; 𝜑; Θ),
+se (𝑑𝑠𝑡 > 0)
+se (𝑑𝑠𝑡 = 0)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do contrato de opção no dia t [option market risk];
+𝑃𝐹𝑙𝑒𝑥 (. ): Fórmula Geral para apreçamento de opções flexíveis [flexible option pricing];
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção no vencimento [flexible option intrinsic value];
+𝑁: Valor nocional do contrato [notional];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺𝒕 : Preço a vista do ativo-objeto do contrato de opção no dia t [underlying];
+𝐾: Preço de exercício [strike];
+𝒊𝒕 : Taxa de juro interna livre de risco no dia t – taxa continuamente composta [domestic interest rate];
+𝝈𝒕 : Volatilidade da opção no dia t [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible options parameters];
+𝑑𝑠𝑡 : Número de dias de saque para o vencimento do contrato [reserve days to maturity].
+
+2.7.
+
+Títulos Públicos e Privados / Corporate and Government Bonds
+a) Risco de títulos pré-fixados (30)
+Prefixed Bond Risk Evaluation
+21
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑅𝑀𝑡 (. ) = 𝑃𝑃𝑅 (𝑁; 𝑖𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑅 (. ): Fórmula Geral para apreçamento de títulos pré-fixados [bond present value];
+𝑁: Valor nocional do título [notional];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo do título [interest rate].
+
+b) Risco de títulos pré-fixados com pagamento de cupons (31)
+Prefixed Coupon Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑃𝑅𝐶 (𝑁; 𝑖𝑡 ; 𝑟; 𝑛𝑡 ; 𝑝)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑅𝐶 (. ): Fórmula Geral para apreçamento de títulos pré-fixados com cupom [bond present value];
+𝑁: Valor nocional do título [notional];
+𝒊𝒕 : Conjunto de taxas de juros no dia t, ao período e em fator, para o prazo do título e para os prazos dos cupons restantes [interest rate];
+𝑟: Taxa de juro pré-fixada [pre-fixed interest rate];
+𝑛𝑡 : Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+c) Risco de títulos pós-fixados (32)
+Postfixed Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑃𝑂 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑂 (. ): Fórmula Geral para apreçamento de títulos pós-fixados [bond present value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑺: Valor do índice de correção do título atual [current index value];
+𝑺𝟎 : Valor do índice de correção do título da data de referência [reference date index value];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo do título [interest rate].
+
+d) Risco de títulos pós-fixados com pagamento de cupons (33)
+Postfixed Coupon Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑃𝑂𝐶 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖𝑡 ; 𝑟; 𝑛𝑡 ; 𝑝)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+22
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝑃𝑂𝐶 (. ): Fórmula Geral para apreçamento de títulos pós-fixados com cupom [bond present value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑺: Valor do índice de correção do título atual [current index value];
+𝑺𝟎 : Valor do índice de correção do título da data de referência [reference date index value];
+𝒊𝒕 : Conjunto de taxas de juros no dia t, ao período e em fator, para o prazo do título e para os prazos dos cupons restantes [interest rate];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑛𝑡 : Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+e) Risco de títulos pós-fixados com correção e pagamento de cupons (41)
+Postfixed Accrual Coupon Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝑃𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼; 𝑖𝑡 ; 𝑟; 𝑛𝑡 ; 𝑝)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝐴𝐶𝑅 (. ): Fórmula Geral para apreçamento de títulos pós-fixados com correção e pagamento de cupom [bond
+present value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑺: Valor do índice de correção do título atual [current index value];
+𝑺𝟎 : Valor do índice de correção do título da data de referência [reference date index value];
+𝑰: Valor do índice pro-rata de correção referente ao período entre a última divulgação e a data de referência
+[pro-rata accrual index];
+𝒊𝒕 : Conjunto de taxas de juros no dia t, ao período e em fator, para o prazo do título e para os prazos dos cupons restantes [interest rate];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑛𝑡 : Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+f)
+Risco de títulos pós-fixados baseados em taxa Libor (34)
+Libor Based Postfixed Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝐿𝐼𝐵 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖𝑡 ; 𝑟; 𝑡1)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝐿𝐼𝐵 (. ): Fórmula Geral para apreçamento de títulos pós-fixados baseados em Libor [bond present value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑺: Valor do índice de correção do título atual [current index value];
+𝑺𝟎 : Valor do índice de correção do título da data de referência [reference date index value];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑡1: Prazo para o próximo cupom [next coupon maturity];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo do próximo cupom [interest rate].
+
+23
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+g) Risco de Cédulas de Produtos Rurais pré-fixadas (CPR) (35)
+Prefixed Rural Product Note Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝐶𝑃𝑅𝐸 (𝑁; 𝑖𝑡 ; 𝑠𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado da cédula no dia t [note market risk];
+𝑃𝐶𝑃𝑅𝐸 (. ): Fórmula para apreçamento de Cédulas de Produtos Rurais pré-fixadas [note present value];
+𝑁: Valor nocional da cédula [notional];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo da cédula [interest rate];
+𝒔𝒕 : Spread de crédito no dia t, ao período e em fator, para o prazo da cédula [spread].
+
+h) Risco de Cédulas de Produtos Rurais pós-fixadas (CPR) (36)
+Postfixed Rural Product Note Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝐶𝑃𝑂𝑆 (𝐻𝑡 ; 𝑄; 𝑣𝑡 ; 𝑖𝑡 ; 𝑠𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado da cédula no dia t [note market risk];
+𝑃𝐶𝑃𝑂𝑆 (. ): Fórmula para apreçamento de Cédulas de Produtos Rurais pós-fixadas [note present value];
+𝑄: Quantidade ofertada na cédula [offer quantity];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒗𝒕 : Valor obtido de uma curva forward de preços no dia t, para o prazo da cédula [forward value];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo da cédula [interest rate];
+𝒔𝒕 : Spread de crédito no dia t, ao período e em fator, para o prazo da cédula [spread].
+
+i)
+Risco de Cédulas de Produtos Rurais de liquidação física (CPR) (37)
+Physical Settlement Rural Product Note Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝑃𝐶𝑃𝑂𝑆 (𝐻𝑡 ; 𝑄; 𝐾; 𝑖𝑡 ; 𝑠𝑡 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado da cédula no dia t [note market risk];
+𝑃𝐶𝑃𝑂𝑆 (. ): Fórmula para apreçamento de Cédulas de Produtos Rurais pós-fixadas [note present value];
+𝑄: Quantidade ofertada na cédula [offer quantity];
+𝐾: Valor negociado para liquidação da cédula [forward value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo da cédula [interest rate];
+𝒔𝒕 : Spread de crédito no dia t, ao período e em fator, para o prazo da cédula [spread].
+
+j)
+Risco de títulos internacionais pré-fixados (38)
+International Prefixed Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑃𝑅 (𝑁; 𝑖𝑡 )
+24
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑅 (. ): Fórmula Geral para apreçamento de títulos pré-fixados [bond present value];
+𝑁: Valor nocional do título [notional];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒊𝒕 : Taxa de juros no dia t, ao período e em fator, para o prazo do título [interest rate].
+
+k) Risco de títulos internacionais pré-fixados com pagamento de cupons (39)
+International Prefixed Coupon Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑃𝑅𝐶 (𝑁; 𝑖𝑡 ; 𝑟⁄𝑝 ; 𝑛𝑡 ; 1)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑅𝐶 (. ): Fórmula Geral para apreçamento de títulos pré-fixados com cupom [bond present value];
+𝑁: Valor nocional do título [notional];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝒊𝒕 : Conjunto de taxas de juros no dia t, ao período e em fator, para o prazo do título e para os prazos dos cupons restantes [interest rate];
+𝑟: Taxa de juro pré-fixada [pre-fixed interest rate];
+𝑛𝑡 : Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+l)
+Risco de títulos internacionais pós-fixados com pagamento de cupons (40)
+International Postfixed Coupon Bond Risk Evaluation
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝑃𝑂𝐶 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖𝑡 ; 𝑟⁄𝑝 ; 𝑛𝑡 ; 1)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝑃𝑂𝐶 (. ): Fórmula Geral para apreçamento de títulos pós-fixados com cupom [bond present value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝑺: Valor do índice de correção do título atual [current index value];
+𝑺𝟎 : Valor do índice de correção do título da data de referência [reference date index value];
+𝒊𝒕 : Conjunto de taxas de juros no dia t, ao período e em fator, para o prazo do título e para os prazos dos cupons restantes [interest rate];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑛𝑡 : Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+m) Risco de títulos internacionais precificados utilizando Duration (42)
+International Duration Bond Risk Evaluation
+25
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑅𝑀𝑡 (. ) = 𝐻𝑡 × 𝑃𝐷 (𝑃0 ; 𝐷; 𝑦𝑡,𝑇 ; 𝑦0,𝑇 )
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃𝐷 (. ): Fórmula Geral para apreçamento de títulos utilizando Duration [bond present value];
+𝑃0 : MtM do título na data de cálculo [present value];
+𝑯𝒕 : Taxa de câmbio auxiliar no dia t [helper exchange rate];
+𝐷: Valor da Duration do título [duration];
+𝒚𝒕,𝑻 : Taxa de correção do título, ao ano, referente ao prazo entre a data corrente e a data de vencimento [current date yield];
+𝒚𝟎,𝑻 : Taxa de correção do título, ao ano, referente ao prazo entre a data de referência e a data de vencimento
+[reference date yield].
+
+n) Risco de títulos de renda fixa privada (43)
+Corporate Bond Risk Evaluation
+𝑃0 × max(1 + min(−𝐷 × (𝑦𝑡,𝑇 − 𝑦0,𝑇 + 𝑠𝑡,𝑇 − 𝑠0,𝑇 ); 0); 0) − 𝐾, se 𝑄 > 0 (compra)
+𝑅𝑀𝑡 (. ) = {
+𝑃0 × (1 + max(−𝐷 × (𝑦𝑡,𝑇 − 𝑦0,𝑇 − 𝑠𝑡,𝑇 + 𝑠0,𝑇 ); 0)) − 𝐾,
+se 𝑄 < 0 (venda)
+Onde:
+𝑅𝑀𝑡 (. ): Risco de Mercado do título no dia t [bond market risk];
+𝑃0 : MtM do título na data de cálculo [present value];
+𝑄 : Quantidade da operação [quantity];
+𝐾 : Preço negociado da operação [price];
+𝐷: Valor da Duration do título [duration];
+𝒚𝒕,𝑻 : Taxa de correção do título, ao ano, referente ao prazo entre a data corrente e a data de vencimento [current date yield];
+𝒚𝟎,𝑻 : Taxa de correção do título, ao ano, referente ao prazo entre a data de referência e a data de vencimento
+[reference date yield];
+𝒔𝒕,𝑻 : Spread de crédito do título, ao ano, referente ao prazo entre a data corrente e a data de vencimento [current date spread];
+𝒔𝟎,𝑻 : Spread de crédito do título, ao ano, referente ao prazo entre a data de referência e a data de vencimento
+[reference date spread].
+
+26
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+3. Fórmulas de Apreçamento / Pricing Formulas
+3.1.
+
+Futuros / Futures
+a) Fórmula Geral para apreçamento de contratos futuros
+Future Value
+𝐹(𝑆; 𝑖; 𝑐) = 𝑆 ×
+𝑖
+𝑐
+Onde:
+𝐹(. ): Preço de Ajuste do contrato futuro [future value];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑖: Taxa de juro interna livre de risco [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry].
+
+b) Fórmula para apreçamento de contratos futuros de taxa de câmbio
+Exchange Rate Future Value
+𝐹𝑇𝐶 (𝑆; 𝑖; 𝑐) = 𝐹(𝑆; 𝑖; 𝑐)
+Onde:
+𝐹𝑇𝐶 (. ): Preço de Ajuste do contrato futuro de taxa de câmbio [exchange rate future value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future value];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑖: Taxa de juro interna livre de risco [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry].
+
+c) Fórmula para apreçamento de contratos futuros com taxa de câmbio composta (relação direta)
+Composed Exchange Rate Future Value
+𝐹𝑇𝐶𝐶 (𝑆; 𝐻; 𝑖; 𝑐; 𝑠) =
+𝐻 × 𝐹𝑇𝐶 (𝑆; 𝑖; 𝑐)
+𝑠
+Onde:
+𝐹𝑇𝐶𝐶 (. ): Preço de Ajuste do contrato futuro [composed exchange rate future value];
+𝐹𝑇𝐶 (. ): Fórmula para apreçamento de contratos futuros de taxa de câmbio [future value];
+𝐻: Taxa de câmbio auxiliar [helper exchange rate];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑖: Taxa de juro interna livre de risco [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry];
+𝑠: Spread de cupom cambial [spread].
+
+27
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+d) Fórmula para apreçamento de contratos futuros com taxa de câmbio composta (relação inversa)
+Inverse Composed Exchange Rate Future Value
+𝐹𝑇𝐶𝐼 (𝑆; 𝐻; 𝑖; 𝑐; 𝑠) =
+𝐻 × 𝐹𝑇𝐶 (1⁄𝑆 ; 𝑖; 𝑐)
+𝑠
+Onde:
+𝐹𝑇𝐶𝐼 (. ): Preço de Ajuste do contrato futuro [inverse composed exchange rate future value];
+𝐹𝑇𝐶 (. ): Fórmula para apreçamento de contratos futuros de taxa de câmbio [future value];
+𝐻: Taxa de câmbio auxiliar [helper exchange rate];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑖: Taxa de juro interna livre de risco [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry];
+𝑠: Spread de cupom cambial [spread].
+
+e) Fórmula para apreçamento de contratos futuros de ouro
+Gold Future Value
+𝐹𝑂 (𝑆; 𝑖) = 𝐹(𝑆; 𝑖; 1)
+Onde:
+𝐹𝑂 (. ): Preço de Ajuste do contrato futuro de ouro [gold future value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future value];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑖: Taxa de juro interna livre de risco, ao período e em fator [domestic interest rate].
+
+f)
+Fórmula para apreçamento de contratos futuros de dívida externa
+Foreign Bond Future Value
+𝐹𝐷𝐸 (𝑆; 𝑐) = 𝐹(𝑆; 𝑐; 1)
+Onde:
+𝐹𝑇𝐶 (. ): Preço de Ajuste do contrato futuro de dívida externa [foreign bond future value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future value];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry].
+
+g) Fórmula para apreçamento de contratos futuros de taxa de juro
+Interest Rate Future Value
+𝐹𝐼 (𝑁; 𝑖) =
+𝑁
+𝑖
+Onde:
+28
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝐹𝐼 (. ): Preço de Ajuste do contrato futuro sobre taxa de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑖: Taxa de juro objeto do contrato futuro [underlying interest rate].
+
+h) Fórmula para apreçamento de contratos futuros de taxa de juro – DI1
+DI1 Interest Rate Future Value
+𝐹𝐷𝐼 (𝑁; 𝑖) = 𝐹𝐼 (𝑁; 𝑖)
+Onde:
+𝐹𝐷𝐼 (. ): Preço de Ajuste do contrato futuro de taxa de juro [DI1 interest rate future value];
+𝐹𝐼 (. ): Fórmula para apreçamento de contratos futuros de taxas de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑖: Taxa de juro objeto do contrato futuro [underlying interest rate].
+
+i)
+Fórmula para apreçamento de contratos futuros de taxa de juro – OC1
+OC1 Interest Rate Future Value
+𝐹𝑂𝐶 (𝑁; 𝑖; 𝑠) =
+𝐹𝐼 (𝑁; 𝑖)
+𝑠
+Onde:
+𝐹𝑂𝐶 (. ): Preço de Ajuste do contrato futuro de taxa de juro [future value];
+𝐹𝐼 (. ): Fórmula para apreçamento de contratos futuros de taxas de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑖: Taxa de juro objeto do contrato futuro [underlying interest rate];
+𝑠: Spread de taxas de juro [spread].
+
+j)
+Fórmula para apreçamento de contratos futuros de cupom cambial – DDI
+Foreign Interest Rate Future Value – DDI
+𝐹𝐶𝐶 (𝑁; 𝑐) = 𝐹𝐼 (𝑁; 𝑐)
+Onde:
+𝐹𝐶𝐶 (. ): Preço de Ajuste do contrato futuro de cupom cambial [foreign interest rate future value];
+𝐹𝐼 (. ): Fórmula para apreçamento de contratos futuros de taxas de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑐: Cupom cambial objeto do contrato futuro [underlying foreign interest rate].
+
+k) Fórmula para apreçamento de contratos futuros de swap de cupom cambial – SCC
+Swap Foreign Interest Rate Future Value – SCC
+𝐹𝑆𝐶𝐶 (𝑁; 𝑐) = −𝐹𝐶𝐶 (𝑁; 𝑐)
+29
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝐹𝑆𝐶𝐶 (. ): Preço de Ajuste do contrato futuro de swap de cupom cambial [swap foreign interest rate future value];
+𝐹𝐶𝐶 (. ): Fórmula para apreçamento de contratos futuros de cupom cambial [foreign interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑐: Cupom cambial objeto do contrato futuro [underlying foreign interest rate].
+
+l)
+Fórmula para apreçamento de contratos futuros de cupom cambial – DCO
+Foreign Interest Rate Future Value – DCO
+𝐹𝐷𝐶 (𝑁; 𝑐; 𝑠) =
+𝐹𝐼 (𝑁; 𝑐)
+𝑠
+Onde:
+𝐹𝐷𝐶 (. ): Preço de Ajuste do contrato futuro de cupom cambial [foreign interest rate future value – DCO];
+𝐹𝐼 (. ): Fórmula para apreçamento de contratos futuros de taxas de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑐: Cupom cambial objeto do contrato futuro [underlying foreign interest rate];
+𝑠: Spread de taxa de juros [spread].
+
+m) Fórmula para apreçamento de contratos futuros de swap de cupom cambial – SCS
+Swap Foreign Interest Rate Future Value – SCS
+𝐹𝑆𝐶𝑆 (𝑁; 𝑐; 𝑠) = −𝐹𝐷𝐶 (𝑁; 𝑐; 𝑠)
+Onde:
+𝐹𝑆𝐶𝑆 (. ): Preço de Ajuste do contrato futuro de swap de cupom cambial [swap foreign interest rate future value
+– SCS];
+𝐹𝐷𝐶 (. ): Fórmula para apreçamento de contratos futuros de cupom cambial [foreign interest rate future value –
+DCO];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝑐: Cupom cambial objeto do contrato futuro [underlying foreign interest rate];
+𝑠: Spread de taxa de juros [spread].
+
+n) Fórmula para apreçamento de contratos futuros de índice
+Index Future Value
+𝐹𝐼𝑋 (𝑆; 𝑖; 𝑐) = 𝐹(𝑆; 𝑖; 𝑐)
+Onde:
+𝐹𝐼𝑋 (. ): Preço de Ajuste do contrato futuro de índice [index future value];
+𝐹(. ): Fórmula Geral para apreçamento de contratos futuros [future value];
+𝑆: Preço a vista do ativo-objeto do contrato futuro [underlying];
+30
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑖: Taxa de juro interna livre de risco [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto [cost of carry].
+
+o) Fórmula para apreçamento de contratos futuros de cupom de inflação
+Inflation Interest Rate Future Value
+𝐹𝐶𝐼 (𝑁; 𝐼; 𝑐) = 𝐼 × 𝐹𝐼 (𝑁; 𝑐)
+Onde:
+𝐹𝐶𝐼 (. ): Preço de Ajuste do contrato futuro de cupom de inflação [inflation interest rate future value];
+𝐹𝐼 (. ): Fórmula Geral para apreçamento de contratos futuros de taxas de juro [interest rate future value];
+𝑁: Valor nocional de face do contrato futuro [notional];
+𝐼: Índice de inflação pro rata [pro rata inflation index];
+𝑐: Cupom de inflação objeto do contrato futuro [underlying inflation interest rate].
+
+p) Fórmula Geral para apreçamento de contratos futuros com base em curvas forward
+Forward Based Future Value
+𝐹𝐹𝑊 (𝑣) = 𝑣
+Onde:
+𝐹𝐹𝑊 (. ): Preço de Ajuste do contrato futuro [forward future value];
+𝑣: Valor obtido de uma curva forward de preços para o prazo do contrato [forward value].
+
+q) Fórmula para apreçamento de contratos futuros com base em curvas forward com spread
+Forward-Spread Based Future Value
+𝐹𝐹𝑆 (𝑣; 𝑠) = 𝑣 × 𝑠
+Onde:
+𝐹𝐹𝑆 (. ): Preço de Ajuste do contrato futuro [future value];
+𝑣: Valor obtido de uma curva forward de preços para o prazo do contrato [forward value];
+𝑠: Spread de forward do contrato futuro [spread].
+
+3.2.
+
+Opções Padronizadas / Plain Vanilla Options
+a) Fórmula Geral para apreçamento de contratos de opções (Garman)
+Garman Option Pricing
+𝑃𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝜑 × (𝑆 × 𝑒 −𝑐.𝑇 × N(𝑑1 ) − 𝐾 × 𝑒 −𝑖.𝑇 × N(𝑑2 ))
+31
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝜎2
+ln(𝑆⁄𝐾 ) + (𝑖 − 𝑐 + 2 ) × 𝑇
+𝑑1 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝜑 ×
+𝜎 × √𝑇
+𝜎2
+ln(𝑆⁄𝐾 ) + (𝑖 − 𝑐 − 2 ) × 𝑇
+𝑑2 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝜑 ×
+𝜎 × √𝑇
+Onde:
+𝑃𝐺 (. ): Prêmio da opção [option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑁(. ): Função de probabilidade Normal Padrão acumulada [standard normal cdf];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+b) Fórmula para apreçamento de contratos de opções sobre futuro de DI (Black Modificado)
+Black Option on DI Future Pricing
+𝑃𝐷𝐼 (𝐹; 𝐾; 𝑖𝑘 ; 𝜎; 𝑇𝑑𝑐,𝑜 ; 𝑇𝑑𝑐,𝑓 ; 𝑇𝑑𝑠,𝑜 ; 𝑇𝑑𝑠,𝑓 ; 𝜑) = 𝛿 × 𝑃𝐺 (𝑆; 𝐾 ′ ; 𝟎; 𝟎; 𝜎; 𝑇𝑑𝑐,𝑜 ; 𝜑)
+𝛿=
+𝐹 × (𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜 )
+1 + 𝐾 ′ × (𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜 )
+𝑆=
+𝐾′ =
+𝐾⁄ − 1
+𝐹
+𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜
+(1 + 𝑖𝑘 )(𝑇𝑑𝑠,𝑓 −𝑇𝑑𝑠,𝑜 ) − 1
+𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜
+Onde:
+𝑃𝐷𝐼 (. ): Prêmio da opção [option value];
+𝑃𝐺 (. ): Fórmula geral para apreçamento da opção (Garman) [Garman Option Pricing];
+𝐹: Valor do futuro ativo-objeto da opção [long future value];
+𝐾: Valor do futuro cujo vencimento coincide com o vencimento da opção [short future value];
+𝑖𝑘 : Taxa de juro de exercício da opção, ao ano, para o prazo do contrato [strike interest rate];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇𝑑𝑐,𝑜 : Prazo para vencimento da opção, em dias corridos, em anos [calendar days maturity];
+𝑇𝑑𝑐,𝑜 = 𝑑𝑐 ⁄360
+32
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑇𝑑𝑐,𝑓 : Prazo para vencimento do futuro objeto, em dias corridos, em anos [underlying calendar days maturity];
+𝑇𝑑𝑐,𝑓 = 𝑑𝑐 ⁄360
+𝑇𝑑𝑠,𝑜 : Prazo para vencimento da opção, em dias de saque, em anos [reserve days maturity];
+𝑇𝑑𝑠,𝑜 = 𝑑𝑠 ⁄252
+𝑇𝑑𝑠,𝑓 : Prazo para vencimento do futuro objeto, em dias de saque, em anos [underlying reserve days maturity];
+𝑇𝑑𝑠,𝑓 = 𝑑𝑠 ⁄252
+c) Fórmula geral para apreçamento de contratos de opções americanas (Haug)
+American Option Pricing
+𝑃 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 1),
+𝑃𝐴 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇 ) = { 𝐺
+𝐻𝑎𝑢𝑔(𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇),
+se (𝑐 ≤ 0)
+se (𝑐 > 0)
+Se 𝑆 ≥ 𝐼2 :
+If 𝑆 ≥ 𝐼2 :
+𝐻𝑎𝑢𝑔(𝑆, 𝐾, 𝑖, 𝑐, 𝜎, 𝑇) = 𝑆 − 𝐾
+Senão:
+Else:
+𝐻𝑎𝑢𝑔(𝑆, 𝐾, 𝑖, 𝑐, 𝜎, 𝑇)
+= 𝛼2 × 𝑆𝛽𝑙𝑖𝑚 − 𝛼2 × 𝜑(𝑆, 𝑡1 , 𝛽, 𝐼2 , 𝐼2 ) + 𝜑(𝑆, 𝑡1 , 1, 𝐼2 , 𝐼2 ) − 𝜑(𝑆, 𝑡1 , 1, 𝐼1 , 𝐼2 )
+− 𝐾 × 𝜑(𝑆, 𝑡1 , 0, 𝐼2 , 𝐼2 ) + 𝐾 × 𝜑(𝑆, 𝑡1 , 0, 𝐼1 , 𝐼2 ) + 𝛼1 × 𝜑(𝑆, 𝑡1 , 𝛽, 𝐼1 , 𝐼2 )
+− 𝛼1 × 𝜓(𝑆, 𝑇, 𝛽, 𝐼1 , 𝐼2 , 𝐼1 , 𝑡1 ) + 𝜓(𝑆, 𝑇, 1, 𝐼1 , 𝐼2 , 𝐼1 , 𝑡1 ) − 𝜓(𝑆, 𝑇, 1, 𝐾, 𝐼2 , 𝐼1 , 𝑡1 )
+− 𝐾 × 𝜓(𝑆, 𝑇, 0, 𝐼1 , 𝐼2 , 𝐼1 , 𝑡1 ) + 𝐾 × 𝜓(𝑆, 𝑇, 0, 𝐾, 𝐼2 , 𝐼1 , 𝑡1 )
+Onde:
+Where:
+𝛼1 = (𝐼1 − 𝐾) × 𝐼1 −𝛽
+𝛼2 = (𝐼2 − 𝐾) × 𝐼2 −𝛽
+𝛽 = (0,5 −
+𝑖−𝑐
+𝑖−𝑐 2
+√(0,5 −
+)
++
+) + 2 × 𝑖⁄ 2
+𝜎
+𝜎2
+𝜎2
+300
+𝛽𝑙𝑖𝑚 = min [𝛽;
+]
+log(𝑆)
+A Fórmula 𝜑(𝑆, 𝑇, 𝛾, 𝐻, 𝐼) é dada por:
+Define 𝜑(𝑆, 𝑇, 𝛾, 𝐻, 𝐼) as follows:
+𝑘𝑙𝑖𝑚
+𝜑(𝑆, 𝑇, 𝛾, 𝐻, 𝐼) = 𝑒 𝜆×𝑇 × 𝑆 𝛾𝑙𝑖𝑚 × [𝑁(−𝑑1 ) − (𝐼⁄𝑆)
+× 𝑁(−𝑑2 )]
+𝑑1 (𝑆, 𝐻, 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+ln(𝑆⁄𝐻 ) + [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑇
+𝜎 × √𝑇
+33
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑑2 (𝑆, 𝐻, 𝐼, 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+𝐼2
+ln (𝑆 × 𝐻 ) + [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑇
+𝜎 × √𝑇
+𝜆 = −𝑖 + 𝛾 × (𝑖 − 𝑐) + 0,5 × 𝛾 × (𝛾 − 1) × 𝜎 2
+𝛾𝑙𝑖𝑚 = min [𝛾;
+𝑘=
+300
+]
+log(𝑆)
+2 × (𝑖 − 𝑐)
++ (2 × 𝛾 − 1)
+𝜎2
+𝑘
+𝑘𝑙𝑖𝑚 =
+,
+𝐼
+≤1
+𝑆
+300
+𝐼
+min [𝑘;
+>1
+],
+𝐼
+𝑆
+log
+(
+)
+{
+𝑆
+𝐼1 = 𝐵0 + (𝐵∞ − 𝐵0 ) × (1 − 𝑒 ℎ1 )
+𝐼2 = 𝐵0 + (𝐵∞ − 𝐵0 ) × (1 − 𝑒 ℎ2 )
+𝐾2
+ℎ1 = − ((𝑖 − 𝑐) × 𝑡1 + 2 × 𝜎 × √𝑡1 ) ×
+(𝐵∞ − 𝐵0 ) × 𝐵0
+ℎ2 = − ((𝑖 − 𝑐) × 𝑇 + 2 × 𝜎 × √𝑇) ×
+𝐾2
+(𝐵∞ − 𝐵0 ) × 𝐵0
+𝑡1 = 0,5 × (√5 − 1) × 𝑇
+𝐵∞ =
+𝐵0 = {
+𝛽
+×𝐾
+𝛽−1
+se [𝑖𝑓] 𝑐 = 0; 𝐾 × 𝑖
+senão [𝑒𝑙𝑠𝑒], max[𝐾; (𝐾 × 𝑖⁄𝑐)]
+A Fórmula 𝜓(𝑆, 𝑇, 𝑖, 𝑐, 𝜎, 𝛾, 𝐻, 𝐼1 , 𝐼2 , 𝑡1 ) é dada por:
+34
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Define 𝜓(𝑆, 𝑇, 𝑖, 𝑐, 𝜎, 𝛾, 𝐻, 𝐼1 , 𝐼2 , 𝑡1 ) as follows:
+𝜓(𝑆, 𝑇, 𝑖, 𝑐, 𝜎, 𝛾, 𝐻, 𝐼1 , 𝐼2 , 𝑡1 )
+= 𝑒 𝜆×𝑇 × 𝑆 𝛾𝑙𝑖𝑚
+𝑘lim _1
+𝑘lim _2
+𝐼
+𝐼
+× [𝑀(−𝑒1 , −𝑓1 , 𝜌) − ( 2⁄𝑆)
+× 𝑀(−𝑒2 , −𝑓2 , 𝜌) − ( 1⁄𝑆)
+× 𝑀(−𝑒3 , −𝑓3 , −𝜌)
+𝑘lim _3
+𝐼
++ ( 1⁄𝐼 )
+× 𝑀(−𝑒4 , −𝑓4 , −𝜌)]
+2
+𝑡
+𝜌 = √ 1⁄𝑇
+𝑘
+𝑘lim _1 =
+,
+𝐼1
+≤1
+𝑆
+300
+𝐼1
+min [𝑘;
+>1
+],
+𝐼1
+𝑆
+log
+(
+)
+{
+𝑆
+𝑘
+𝑘lim _3 =
+𝐼2
+≤1
+𝑆
+300
+𝐼2
+min [𝑘;
+>1
+],
+𝐼2
+𝑆
+log
+(
+)
+{
+𝑆
+𝑘
+𝑘lim _2 =
+,
+min [𝑘;
+{
+,
+𝐼1
+≤1
+𝐼2
+300
+𝐼1
+>1
+],
+𝐼1
+𝐼
+2
+log (𝐼 )
+2
+ln (𝑆⁄𝐼 ) + [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑡1
+1
+𝑒1 (𝑆, 𝐼1 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑡1 ) =
+𝜎 × √𝑡1
+𝑒2 (𝑆, 𝐼1 , 𝐼2 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑡1 ) =
+𝑒3 (𝑆, 𝐼1 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑡1 ) =
+𝑒4 (𝑆, 𝐼1 , 𝐼2 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑡1 ) =
+𝑓1 (𝑆, 𝐻, 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+𝐼2 2
+2]
+[𝑖
+(𝛾
+ln (𝑆 ×
+𝐼 ) + − 𝑐 + − 0,5) × 𝜎 × 𝑡1
+1
+𝜎 × √𝑡1
+ln (𝑆⁄𝐼 ) − [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑡1
+1
+𝜎 × √𝑡1
+𝐼2 2
+2]
+[𝑖
+(𝛾
+ln (𝑆 ×
+𝐼 ) − − 𝑐 + − 0,5) × 𝜎 × 𝑡1
+1
+𝜎 × √𝑡1
+ln(𝑆⁄𝐻 ) + [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑇
+𝜎 × √𝑇
+35
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑓2 (𝑆, 𝐻, 𝐼2 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+𝐼2 2
+2]
+[𝑖
+(𝛾
+ln (𝑆 ×
+𝐻 ) + − 𝑐 + − 0,5) × 𝜎 × 𝑇
+𝜎 × √𝑇
+ln (
+𝑓3 (𝑆, 𝐻, 𝐼1 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+𝐼1 2
++ [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑇
+𝑆 × 𝐻)
+𝜎 × √𝑇
+ln (
+𝑓4 (𝑆, 𝐻, 𝐼1 , 𝐼2 , 𝑖, 𝑐, 𝛾, 𝜎, 𝑇) =
+𝑆 × 𝐼1 2
+) + [𝑖 − 𝑐 + (𝛾 − 0,5) × 𝜎 2 ] × 𝑇
+𝐻 × 𝐼2 2
+𝜎 × √𝑇
+Onde:
+𝑃𝐴 (. ): Prêmio da opção [american option value];
+𝑃𝐺 (. ): Fórmula geral para apreçamento da opção (Garman) [Garman Option Pricing];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝑇: Prazo para vencimento da opção, em anos [maturity];
+𝑇 = 𝑑𝑠 ⁄252
+𝑁(. ): Distribuição normal padrão acumulada univariada [standard normal cdf];
+𝑀(. ): Distribuição normal padrão acumulada bivariada [bivariate standard normal cdf].
+
+d) Fórmula Geral para apreçamento de contratos de opções no vencimento (Valor Intrínseco)
+Option Intrinsic Value Pricing
+𝑃𝐼 (𝑆; 𝐾; 𝜑) = max(𝜑 × (𝑆 − 𝐾); 0)
+Onde:
+𝑃𝐼 (. ): Prêmio da opção [option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+3.3.
+
+Swaps
+a) Fórmula para atualização do Valor Base de um swap em taxa de juro
+Interest Rate Swap Current Value
+36
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+1⁄
+𝐻
+𝑆
+𝑉𝐵𝐴 𝑇𝐽 (𝑉0 ; 𝑆; 𝑆0 ; 𝑟; 𝑝; 𝐻) = 𝑉0 × [1 + (( )
+𝑆0
+𝐻
+− 1) × 𝑝] × (1 + 𝑟)𝐻⁄252
+Onde:
+𝑉𝐵𝐴 𝑇𝐽 (. ): Valor Base Atualizado da ponta do swap [swap current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑆: Índice da taxa de juro atual [current interest rate index];
+𝑆0 : Índice da taxa de juro da data de referência [reference date interest rate index];
+𝐻: Prazo decorrido entre a data de referência e a data atual, em dias de saque [holding period];
+𝑝: Percentual de valorização negociado em contrato [valuation percentage];
+𝑟: Taxa de juro negociada em contrato, ao ano [prefixed interest rate].
+
+b) Fórmula para atualização do Valor Base de um swap em índice
+Index Swap Current Value
+𝑉𝐵𝐴𝐼𝑁 (𝑉0 ; 𝑆; 𝑆0 ) = 𝑉0 ×
+𝑆
+𝑆0
+Onde:
+𝑉𝐵𝐴𝐼𝑁 (. ): Valor Base Atualizado da ponta do swap [swap current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑆: Valor do índice atual [current index];
+𝑆0 : Valor do índice da data de referência [reference date index].
+
+c) Fórmula para atualização do Valor Base de um swap em índice com correção
+Index Accrual Swap Current Value
+𝑉𝐵𝐴𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼) = 𝑉0 × 𝐼 ×
+𝑆
+𝑆0
+Onde:
+𝑉𝐵𝐴𝐴𝐶𝑅 (. ): Valor Base Atualizado da ponta do swap [swap current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑆: Valor do índice atual [current inflation index];
+𝑆0 : Valor do índice na data de referência [reference date inflation index];
+𝐼: Valor do índice pro-rata de correção referente ao período entre a última divulgação e a data de referência
+[pro-rata accrual index].
+
+d) Fórmula para atualização do Valor Base de um swap em taxa de câmbio composta – relação direta
+Composed Exchange Rate Swap Current Value
+𝑉𝐵𝐴 𝑇𝐶𝐶 (𝑉0 ; 𝑆; 𝑆0 ; 𝑀; 𝑀0 ) = 𝑉0 ×
+𝑆×𝑀
+𝑆0 × 𝑀0
+37
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑉𝐵𝐴 𝑇𝐶𝐶 (. ): Valor Base Atualizado da ponta do swap [swap current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑆: Taxa de câmbio atual [current exchange rate];
+𝑆0 : Taxa de câmbio da data de referência [reference date exchange rate];
+𝑀: Taxa de câmbio auxiliar atual [current helper exchange rate];
+𝑀0 : Taxa de câmbio auxiliar da data de referência [reference date helper exchange rate].
+
+e) Fórmula para atualização do Valor Base de um swap em taxa de câmbio composta – relação inversa
+Inverse Composed Exchange Rate Swap Current Value
+𝑉𝐵𝐴 𝑇𝐶𝐼 (𝑉0 ; 𝑆; 𝑆0 ; 𝑀; 𝑀0 ) = 𝑉0 ×
+𝑀 ⁄𝑆
+𝑀0 ⁄𝑆0
+Onde:
+𝑉𝐵𝐴 𝑇𝐶𝐼 (. ): Valor Base Atualizado da ponta do swap [swap current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑆: Taxa de câmbio atual [current exchange rate];
+𝑆0 : Taxa de câmbio da data de referência [reference date exchange rate];
+𝑀: Taxa de câmbio auxiliar atual [current helper exchange rate];
+𝑀0 : Taxa de câmbio auxiliar da data de referência [reference date helper exchange rate].
+
+f)
+Fórmula para cálculo do MtM de uma ponta de um swap em taxa de juro prefixada (121)
+Prefixed Interest Rate Swap MtM
+(𝑇−𝑇0 +𝐻)
+252
+𝑉0 × (1 + 𝑟)
+𝑃𝑃𝑅𝐸 (𝑉0 ; 𝑟; 𝐻; 𝑖𝑡 ) =
+𝑖𝑡
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0): 𝑇0 = 0
+If Base-Date ≤ Current Date (𝑇0 ≤ 0): 𝑇0 = 0
+Se Data-Base > Data-Atual (𝑇0 > 0): 𝐻 = 0
+If Base-Date > Current Date (𝑇0 > 0): 𝐻 = 0
+Onde:
+𝑃𝑃𝑅𝐸 (. ): MtM da ponta do swap [swap MtM];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual, em dias de saque [holding period];
+𝑇: Prazo para vencimento do swap, em dias de saque [maturity];
+𝑇0 : Prazo para a data-base do swap, em dias de saque [number of reserve days to base-date];
+𝑟: Taxa de juro negociada em contrato [prefixed interest rate].
+
+38
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+g) Fórmula para cálculo do MtM de uma ponta de um swap em taxa de juro (122)
+Interest Rate Swap MtM
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0):
+If Base-Date ≤ Current Date (𝑇0 ≤ 0):
+𝑇0 = 0
+𝑉𝐵𝐴 = 𝑉𝐵𝐴 𝑇𝐽 (𝑉0 ; 𝑆; 𝑆0 ; 𝑟; 𝑝; 𝐻)
+Se Data-Base > Data-Atual (𝑇0 > 0):
+If Base-Date > Current Date (𝑇0 > 0):
+𝑉𝐵𝐴 = 𝑉0
+Cálculo do MtM:
+MtM is given by:
+𝑇−𝑇0
+1
+𝑃𝑇𝐽 (𝑉0 ; 𝑆; 𝑆0 ; 𝑟; 𝑝; 𝑖𝑡 ; 𝑖𝑡0 ; 𝐻; 𝑇; 𝑇0 ) =
+𝑖 𝑇−𝑇0
+𝑉𝐵𝐴 × (1 + (( 𝑡 )
+− 1) × 𝑝)
+𝑖𝑡0
+𝑇−𝑇0
+× (1 + 𝑟) 252
+𝑖𝑡
+Onde:
+𝑃𝑇𝐽 (. ): MtM da ponta do swap [swap MtM];
+𝑉𝐵𝐴 𝑇𝐽 (. ): Fórmula para atualização do valor base do swap em taxa de juros [current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑺: Índice da taxa de juro atual [current interest rate index];
+𝑺𝟎 : Índice da taxa de juro da data de referência [reference date interest rate index];
+𝒊𝒕 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo do contrato [maturity interest rate];
+𝒊𝒕𝟎 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo da data base do swap
+[base-date interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual, em dias de saque [holding period];
+𝑇: Prazo para vencimento do swap, em dias de saque [maturity];
+𝑇0 : Prazo para a data-base do swap, em dias de saque [number of reserve days to base-date];
+𝑟: Taxa de juro negociada em contrato [prefixed interest rate];
+𝑝: Percentual de valorização negociado em contrato [valuation percentage].
+
+h) Fórmula para cálculo do MtM de uma ponta de um swap em índice (123)
+Index Swap MtM
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0):
+If Base-Date ≤ Current Date (𝑇0 ≤ 0):
+𝑇0 = 0
+𝑉𝐵𝐴 = 𝑉𝐵𝐴𝐼𝑁 (𝑉0 ; 𝑆; 𝑆0 )
+39
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Se Data-Base > Data-Atual (𝑇0 > 0):
+If Base-Date > Current Date (𝑇0 > 0):
+𝑉𝐵𝐴𝐼𝑁 (𝑉0 ; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ), se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑉𝐵𝐴 = {
+𝑉0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝐻=0
+Se Data-Base < Data-Referência:
+If Base-Date < Reference Date:
+𝑟𝑇+𝐻−𝑇0
+𝑟
+; 𝑇 + 𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒) , se Crit. de Capit. for linear [𝑙𝑖𝑛𝑒𝑎𝑟 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+𝑇 ×𝑟
+=
+(1 + 1
+)
+𝐵𝑎𝑠𝑒
+(𝑟;
+𝑖
+𝑇
++
+𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒), se Crit. de Capit. for exponencial [𝑒𝑥𝑝𝑜𝑛𝑒𝑛𝑡𝑖𝑎𝑙 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+{ 𝑐
+𝑖𝑠 (
+Se Data-Base ≥ Data-Referência:
+If Base-Date ≥ Reference Date:
+𝑖𝑠 (𝑟; 𝑇 + 𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒), se Crit. de Capitalização for linear [𝑙𝑖𝑛𝑒𝑎𝑟 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+𝑟𝑇+𝐻−𝑇0 = {
+𝑖𝑐 (𝑟; 𝑇 + 𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒), se Crit. de Capitalização for exponencial [𝑒𝑥𝑝𝑜𝑛𝑒𝑛𝑡𝑖𝑎𝑙 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+Cálculo do MtM:
+MtM is given by:
+𝑉𝐵𝐴 × 𝑟𝑇+𝐻−𝑇0
+, se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑐𝑡
+𝑃𝐼𝑁 (𝑉𝐵𝐴; 𝑟; 𝑐𝑡 ; 𝑐𝑡0 ; 𝑖𝑡0 ; 𝑇; 𝑇0 ; 𝐻) =
+𝑐𝑡0
+𝑉𝐵𝐴 ×
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝑐𝑡 × 𝑖𝑡0
+{
+Onde:
+𝑃𝐼𝑁 (. ): MtM da ponta do swap [swap MtM];
+𝑉𝐵𝐴𝐼𝑁 (. ): Fórmula para atualização do valor base do swap em índice [current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑺: Índice atual [current index];
+𝑺𝟎 : Índice da data de referência [reference date index];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Valor do índice inicial negociado entre as partes [start index];
+𝒄𝒕 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo do
+contrato [maturity cost of carry];
+𝒄𝒕𝟎 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo da
+data base do swap [base-date cost of carry];
+𝒊𝒕𝟎 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo da data base do swap
+[base-date domestic interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual [holding period];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑇: Prazo para vencimento do swap [maturity];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+40
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑇0 : Prazo para a data-base do swap [number of days to base-date];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑇1 : Prazo decorrido, em dias corridos, entre a data-base do swap e a data de referência [number of days to
+reference date];
+𝑟: Taxa de juro negociada em contrato [prefixed interest rate];
+𝑟𝑇+𝐻−𝑇0 : Taxa de juro negociada em contrato, ao período e em fator, para o prazo T+H-T0, calculada de
+acordo com a Base e o Critério de Capitalização do FPR custo de carregamento [prefixed interest rate]
+𝑖𝑠 (. ): Conversão de Taxa ao Ano para Taxa ao Período – capitalização simples [Simple Capitalization Interest
+Rate].
+𝑖𝑐 (. ): Conversão de Taxa ao Ano para Taxa ao Período – capitalização composta [Composed Capitalization
+Interest Rate].
+
+i)
+Fórmula para cálculo do MtM de uma ponta de um swap em índice com correção (124)
+Index Accrual Swap MtM
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0):
+If Base-Date ≤ Current Date (𝑇0 ≤ 0):
+𝑇0 = 0
+𝑉𝐵𝐴 = 𝑉𝐵𝐴𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼)
+Se Data-Base > Data-Atual (𝑇0 > 0):
+If Base-Date > Current Date (𝑇0 > 0):
+𝑉𝐵𝐴𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝐼), se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑉𝐵𝐴 = {
+𝑉0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝐻=0
+Cálculo do MtM:
+MtM is given by:
+𝑖𝑠 (𝑟; 𝑇 + 𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒), se Crit. de Capitalização for linear [𝑙𝑖𝑛𝑒𝑎𝑟 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+𝑟𝑇+𝐻−𝑇0 = {
+(𝑟;
+𝑖𝑐 𝑇 + 𝐻 − 𝑇0 ; 𝐵𝑎𝑠𝑒), se Crit. de Capitalização for exponencial [𝑒𝑥𝑝𝑜𝑛𝑒𝑛𝑡𝑖𝑎𝑙 𝐶𝑎𝑝. 𝐶𝑟𝑖𝑡𝑒𝑟𝑖𝑎]
+𝑉𝐵𝐴 × 𝑟𝑇+𝐻−𝑇0
+, se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑐𝑡
+𝑃𝐴𝐶𝑅 (𝑉𝐵𝐴; 𝑟; 𝑐𝑡 ; 𝑐𝑡0 ; 𝑖𝑡0 ; 𝑇; 𝑇0 ; 𝐻) =
+𝑐𝑡0
+𝑉𝐵𝐴 ×
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝑐𝑡 × 𝑖𝑡0
+{
+Onde:
+𝑃𝐴𝐶𝑅 (. ): MtM da ponta do swap [swap MtM];
+41
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑉𝐵𝐴𝐴𝐶𝑅 (. ): Fórmula para atualização do valor base do swap em índice com correção [current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑺: Índice atual [current index];
+𝑺𝟎 : Índice da data de referência [reference date index];
+𝑰: Valor do índice pro-rata de correção referente ao período entre a última divulgação e a data de referência
+[pro-rata accrual index];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Valor do índice inicial negociado entre as partes [start index];
+𝒄𝒕 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo do
+contrato [maturity cost of carry];
+𝒄𝒕𝟎 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo da
+data base do swap [base-date cost of carry];
+𝒊𝒕𝟎 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo da data base do swap
+[base-date domestic interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual [holding period];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑇: Prazo para vencimento do swap, em dias corridos [maturity];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑇0 : Prazo para a data-base do swap, em dias corridos [number of days to base-date];
+Especificado em dias corridos, se a Base do FPR custo de carregamento for igual a 360;
+Defined as calendar days, if the cost of carry PRF base is 360;
+Especificado em dias de saque, se a Base do FPR custo de carregamento for igual a 252;
+Defined as reserve days, if the cost of carry PRF base is 252;
+𝑟: Taxa de juro negociada em contrato [prefixed interest rate];
+𝑟𝑇+𝐻−𝑇0 : Taxa de juro negociada em contrato, ao período e em fator, para o prazo T+H-T0, calculada de
+acordo com a Base e o Critério de Capitalização do FPR custo de carregamento [prefixed interest rate]
+j)
+Fórmula Geral para cálculo do MtM de uma ponta de um swap em taxa de câmbio – relação direta
+(125)
+Composed Exchange Rate Swap MtM
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0):
+If Base-Date ≤ Current Date (𝑇0 ≤ 0):
+𝑇0 = 0
+𝑉𝐵𝐴 = 𝑉𝐵𝐴 𝑇𝐶𝐶 (𝑉0 ; 𝑆; 𝑆0 ; 𝑀; 𝑀0 )
+Se Data-Base > Data-Atual (𝑇0 > 0):
+If Base-Date > Current Date (𝑇0 > 0):
+𝑉𝐵𝐴 𝑇𝐶𝐶 (𝑉0 ; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑀; 1), se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑉𝐵𝐴 = {
+𝑉0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+42
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝐻=0
+Se Data-Base < Data-Referência:
+If Base-Date < Reference Date:
+𝑟𝑇+𝐻−𝑇0 = 𝑖𝑠 (
+𝑟
+; 𝑇 + 𝐻 − 𝑇0 ; 360)
+𝑇1 × 𝑟
+(1 + 360 )
+Se Data-Base ≥ Data-Referência:
+If Base-Date ≥ Reference Date:
+𝑟𝑇+𝐻−𝑇0 = 𝑖𝑠 (𝑟; 𝑇 + 𝐻 − 𝑇0 ; 360)
+Cálculo do MtM:
+MtM is given by:
+𝑉𝐵𝐴
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑐𝑡 × 𝑠𝑡
+𝑃𝑇𝐶𝐶 (𝑉𝐵𝐴; 𝑟; 𝑐𝑡 ; 𝑐𝑡0 ; 𝑠𝑡 ; 𝑠𝑡0 ; 𝑖𝑡0 ; 𝑇; 𝑇0 ; 𝐻) =
+𝑐𝑡0 × 𝑠𝑡0
+𝑉𝐵𝐴 ×
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝑐𝑡 × 𝑠𝑡 × 𝑖𝑡0
+{
+Onde:
+𝑃𝑇𝐶𝐶 (. ): MtM da ponta do swap [swap MtM];
+𝑉𝐵𝐴 𝑇𝐶𝐶 (. ): Fórmula para atualização do valor base de um swap em taxa de câmbio composta [swap current
+value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑺: Taxa de câmbio atual [current exchange rate];
+𝑺𝟎 : Taxa de câmbio da data de referência [reference date exchange rate];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Valor da taxa de câmbio inicial negociada entre as partes. [start exchange rate];
+𝑴: Taxa de câmbio auxiliar atual [current helper exchange rate];
+𝑴𝟎 : Taxa de câmbio auxiliar da data de referência [reference date helper exchange rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo do
+contrato [cost of carry];
+𝒄𝒕𝟎 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo da
+data base do swap [cost of carry];
+𝒔𝒕 : Spread de cupom cambial no dia t, ao período e em fator, para o prazo do contrato [maturity spread];
+𝒔𝒕𝟎 : Spread de cupom cambial no dia t, ao período e em fator, para o prazo da data base do swap [base-date
+spread];
+𝒊𝒕𝟎 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo da data base do swap
+[base-date domestic interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual, em dias corridos [holding period];
+𝑇: Prazo para vencimento do swap, em dias corridos [maturity];
+𝑇0 : Prazo para a data-base do swap, em dias corridos [number of days to base-date];
+𝑇1 : Prazo decorrido, em dias corridos, entre a data-base do swap e a data de referência [number of days to
+reference date];
+𝑟: Taxa de juro negociada em contrato, expressa em percentual (e.g. 6,38%) [prefixed interest rate];
+43
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑟𝑇+𝐻−𝑇0 : Taxa de juro negociada em contrato, ao período e em fator, para o prazo T+H-T0, calculada com a
+Base 360 e Capitalização Simples [prefixed interest rate] ;
+𝑖𝑠 (. ): Conversão de Taxa ao Ano para Taxa ao Período – capitalização simples [Simple Capitalization Interest
+Rate].
+
+k) Fórmula para cálculo do MtM de uma ponta de um swap em taxa de câmbio – relação inversa (126)
+Inverse Composed Exchange Rate Swap MtM
+Se Data-Base ≤ Data-Atual (𝑇0 ≤ 0):
+If Base-Date ≤ Current Date (𝑇0 ≤ 0):
+𝑇0 = 0
+𝑉𝐵𝐴 = 𝑉𝐵𝐴 𝑇𝐶𝐼 (𝑉0 ; 𝑆; 𝑆0 ; 𝑀; 𝑀0 )
+Se Data-Base > Data-Atual (𝑇0 > 0):
+If Base-Date > Current Date (𝑇0 > 0):
+𝑉𝐵𝐴 𝑇𝐶𝐼 (𝑉0 ; 𝑆; 1⁄𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑀; 1); se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑉𝐵𝐴 = {
+𝑉0 ; se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝐻=0
+Se Data-Base < Data-Referência:
+If Base-Date < Reference Date:
+𝑟𝑇+𝐻−𝑇0 = 𝑖𝑠 (
+𝑟
+; 𝑇 + 𝐻 − 𝑇0 ; 360)
+𝑇1 × 𝑟
+(1 +
+)
+360
+Se Data-Base ≥ Data-Referência:
+If Base-Date ≥ Reference Date (𝑇0 > 0):
+𝑟𝑇+𝐻−𝑇0 = 𝑖𝑠 (𝑟; 𝑇 + 𝐻 − 𝑇0 ; 360)
+Cálculo do MtM:
+MtM is given by:
+𝑉𝐵𝐴
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 ≠ 0)
+𝑐𝑡 × 𝑠𝑡
+𝑃𝑇𝐶𝐼 (𝑉𝐵𝐴; 𝑟; 𝑐𝑡 ; 𝑐𝑡0 ; 𝑠𝑡 ; 𝑠𝑡0 ; 𝑖𝑡0 ; 𝑇; 𝑇0 ; 𝐻) =
+𝑐𝑡0 × 𝑠𝑡0
+𝑉𝐵𝐴 ×
+× 𝑟𝑇+𝐻−𝑇0 , se (𝑆𝑠𝑡𝑎𝑟𝑡 = 0)
+𝑐𝑡 × 𝑠𝑡 × 𝑖𝑡0
+{
+Onde:
+𝑃𝑇𝐶𝐼 (. ): MtM da ponta do swap [swap MtM];
+𝑉𝐵𝐴 𝑇𝐶𝐼 (. ): Fórmula para atualização do valor base de um swap de taxa de câmbio – relação inversa [swap
+current value];
+𝑉0 : Valor Base Atualizado da ponta do swap na data de referência [swap reference date value];
+𝑺: Taxa de câmbio atual [current exchange rate];
+𝑺𝟎 : Taxa de câmbio da data de referência [reference date exchange rate];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Valor da taxa de câmbio inicial negociada entre as partes. [start exchange rate];
+𝑴: Taxa de câmbio auxiliar atual [current helper exchange rate];
+44
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑴𝟎 : Taxa de câmbio auxiliar da data de referência [reference date helper exchange rate];
+𝒄𝒕 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo do
+contrato [maturity cost of carry];
+𝒄𝒕𝟎 : Custo de carregamento do ativo-objeto da ponta do swap no dia t, ao período e em fator, para o prazo da
+data base do swap [base-date cost of carry];
+𝒔𝒕 : Spread de cupom cambial no dia t, ao período e em fator, para o prazo do contrato [maturity spread];
+𝒔𝒕𝟎 : Spread de cupom cambial no dia t, ao período e em fator, para o prazo da data base do swap [base-date
+spread];
+𝒊𝒕𝟎 : Taxa de juros interna livre de risco no dia t, ao período e em fator, para o prazo da data base do swap
+[base-date domestic interest rate];
+𝐻: Prazo decorrido entre a data de referência e a data atual, em dias corridos [holding period];
+𝑇: Prazo para vencimento do swap, em dias corridos [maturity];
+𝑇0 : Prazo para a data-base do swap, em dias corridos [number of days to base-date];
+𝑇1 : Prazo decorrido, em dias corridos, entre a data-base do swap e a data de referência [number of days to
+reference date];
+𝑟: Taxa de juro negociada em contrato, expressa em percentual (e.g. 6,38%) [prefixed interest rate];
+𝑟𝑇+𝐻−𝑇0 : Taxa de juro negociada em contrato, ao período e em fator, para o prazo T+H-T0, calculada com a
+Base 360 e Capitalização Simples [prefixed interest rate] ;
+𝑖𝑠 (. ): Conversão de Taxa ao Ano para Taxa ao Período – capitalização simples [Simple Capitalization Interest
+Rate].
+
+3.4.
+
+Termos / Forwards
+a) Fórmula para cálculo do MtM de um contrato a termo em metais
+Metal Non-deliverable Forward MtM
+𝑃𝑀 (𝑁; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑖) = 𝑁 × (𝑆 −
+𝑆𝑠𝑡𝑎𝑟𝑡
+)
+𝑖
+Onde:
+𝑃𝑀 (. ): MtM do contrato a termo [non-deliverable forward MtM];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço atual do ativo-objeto [current underlying value];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝑖: Taxa de juros interna livre de risco, ao período e em fator, para o prazo do contrato [interest rate].
+
+b) Fórmula para cálculo do MtM de um contrato a termo em taxa de câmbio
+Exchange Rate Non-deliverable Forward MtM
+𝑃𝑇𝐶 (𝑁; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑖; 𝑐) = 𝑁 × (𝑆⁄𝑐 −
+𝑆𝑠𝑡𝑎𝑟𝑡⁄
+𝑖)
+Onde:
+𝑃𝑇𝐶 (. ): MtM do contrato a termo [non-deliverable forward MtM];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço atual do ativo-objeto [current underlying value];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+45
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑖: Taxa de juros interna livre de risco, ao período e em fator, para o prazo do contrato [interest rate];
+𝑐: Custo de carregamento do ativo-objeto, ao período e em fator, para o prazo do contrato [cost of carry].
+
+c) Fórmula para cálculo do MtM de um contrato a termo em taxa de câmbio composta – relação direta
+Composed Exchange Rate Non-deliverable Forward MtM
+𝑆
+)
+𝑠𝑡𝑎𝑟𝑡 × 𝑐 × 𝑠
+𝑃𝑇𝐶𝐶 (𝑁; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑐; 𝑠) = 𝑁 × (1⁄𝑐 −
+𝑆
+Onde:
+𝑃𝑇𝐶𝐶 (. ): MtM do contrato a termo [non-deliverable forward MtM];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço atual do ativo-objeto [current underlying value];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝑐: Custo de carregamento do ativo-objeto, ao período e em fator, para o prazo do contrato [interest rate];
+𝑠: Spread de cupom cambial, ao período e em fator, para o prazo do contrato [spread].
+
+d) Fórmula para cálculo do MtM de um contrato a termo em taxa de câmbio composta – relação inversa
+Inverse Composed Exchange Rate Non-deliverable Forward MtM
+𝑃𝑇𝐶𝐼 (𝑁; 𝑆; 𝑆𝑠𝑡𝑎𝑟𝑡 ; 𝑐; 𝑠) = 𝑁 × (1⁄𝑐 −
+𝑆𝑠𝑡𝑎𝑟𝑡
+)
+𝑆×𝑐×𝑠
+Onde:
+𝑃𝑇𝐶𝐼 (. ): MtM do contrato a termo [non-deliverable forward MtM];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço atual do ativo-objeto [current underlying value];
+𝑆𝑠𝑡𝑎𝑟𝑡 : Preço do ativo-objeto negociado entre as partes [start underlying value];
+𝑐: Custo de carregamento do ativo-objeto, ao período e em fator, para o prazo do contrato [interest rate];
+𝑠: Spread de cupom cambial, ao período e em fator, para o prazo do contrato [spread].
+
+3.5.
+
+Opções Flexíveis / Flexible Options
+a) Fórmula Geral para apreçamento de opções flexíveis
+Flexible Option Pricing
+𝑃𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+𝑃𝑆 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵)
+𝑃𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝑃𝐹𝑙𝑒𝑥 (𝑁; 𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; Θ) = 𝑁 ×
+𝑃𝑆,𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+𝑃𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+{𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+46
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑃𝐹𝑙𝑒𝑥 (. ): Prêmio da opção [option value];
+𝑃𝐺 (. ): Fórmula Geral para apreçamento de contratos de opções (Garman) [Garman option pricing];
+𝑃𝑆 (. ): Fórmula para apreçamento de contratos de opções com barreira simples [limit barrier option pricing];
+𝑃𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-in [knock-in barrier option
+pricing];
+𝑃𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-out [knock-out barrier option
+pricing];
+𝑃𝑆,𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com barreiras simples e Knock-in [limit and
+knock-in barrier option pricing];
+𝑃𝑆,𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreiras simples e Knock-out [limit and
+knock-out barrier option pricing];
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreiras Knock-in e Knock-out [knock-in
+and knock-out barrier option pricing];
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreiras simnples, Knock-in e Knockout [limit, knock-in and knock-out barrier option pricing];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible option parameters];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+𝚯 é composto por:
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝐻: Valor da barreira knock-in ou knock-out [knock-in/out barrier value];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+𝜂𝑜𝑢𝑡 : Indicador de barreira up ou down da barreira out [knock-out barrier up or down indicator].
+
+b) Fórmula para apreçamento de opções flexíveis com barreira simples
+Limit Barrier Flexible Option Pricing
+𝑃𝑆 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵) = 𝑃𝐺 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) − 𝑃𝐺 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+Onde:
+47
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝑆 (. ): Prêmio da opção [limit option value];
+𝑃𝐺 (. ): Fórmula Geral para apreçamento de contratos de opções (Garman) [Garman option pricing];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+c) Fórmula para apreçamento de opções flexíveis com barreira Knock-in ou Knock-out
+Knock-in/ Knock-out Barrier Flexible Option Pricing
+Se a barreira foi atingida previamente:
+If the barrier has been previously breached:
+𝑃𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) = 𝑃𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) = 𝑅
+Durante o holding period, a barreira foi atingida no dia t se:
+During the holding period, barrier is breached at t if:
+𝑆 ≤ 𝐻; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻; se 𝜂 = −1
+Senão:
+Else:
+Abaixo, considerar ajuste de barreiras por: 𝐻 = 𝐻′(𝐻; 𝑆; 𝜎)
+Consider bellow adjusted barriers as: 𝐻 = 𝐻′(𝐻; 𝑆; 𝜎)
+𝑃𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝐶 + 𝐸,
+=
+se (𝜂 = 1 e 𝜑 = 1 e 𝐾 > 𝐻) ou ( 𝜂 = −1 e 𝜑 = −1 e 𝐾 < 𝐻)
+𝐴 − 𝐵 + 𝐷 + 𝐸, se (𝜂 = 1 e 𝜑 = 1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 > 𝐻)
+𝐵 − 𝐶 + 𝐷 + 𝐸, se (𝜂 = 1 e 𝜑 = −1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 < 𝐻)
+{
+𝐴 + 𝐸,
+se (𝜂 = 1 e 𝜑 = −1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 > 𝐻)
+𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝐴 − 𝐶 + 𝐹,
+se (𝜂 = 1 e 𝜑 = 1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 < 𝐻)
+=
+𝐵 − 𝐷 + 𝐹,
+se (𝜂 = 1 e 𝜑 = 1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 > 𝐻)
+𝐴 − 𝐵 + 𝐶 − 𝐷 + 𝐹, se (𝜂 = 1 e 𝜑 = −1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 < 𝐻)
+{
+𝐹,
+se (𝜂 = 1 e 𝜑 = −1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 > 𝐻)
+Variáveis auxiliares:
+48
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Auxiliary variables:
+𝐴 = 𝜑𝑆𝑒 (−𝑐).𝑇 × N(𝜑𝑥1 ) − 𝜑𝐾𝑒 −𝑖𝑇 × N(𝜑𝑥1 − 𝜑𝜎√𝑇)
+𝐵 = 𝜑𝑆𝑒 (−𝑐).𝑇 × N(𝜑𝑥2 ) − 𝜑𝐾𝑒 −𝑖𝑇 × N(𝜑𝑥2 − 𝜑𝜎√𝑇)
+𝐶 = 𝜑𝑆𝑒 (−𝑐).𝑇 × (𝐻⁄𝑆)2.(𝜇𝑙𝑖𝑚+1) × N(𝜂𝑦1 ) − 𝜑𝐾𝑒 −𝑖𝑇 × (𝐻⁄𝑆)2𝜇𝑙𝑖𝑚 × N(𝜂𝑦1 − 𝜂𝜎√𝑇)
+𝐷 = 𝜑𝑆𝑒 (−𝑐).𝑇 × (𝐻⁄𝑆)2.(𝜇𝑙𝑖𝑚+1) × N(𝜂𝑦2 ) − 𝜑𝐾𝑒 −𝑖𝑇 × (𝐻⁄𝑆)2𝜇𝑙𝑖𝑚 × N(𝜂𝑦2 − 𝜂𝜎√𝑇)
+𝐸 = 𝑅𝑒 −𝑖𝑇 × [N(𝜂𝑥2 − 𝜂𝜎√𝑇) − (𝐻⁄𝑆)2𝜇𝑙𝑖𝑚 × N(𝜂𝑦2 − 𝜂𝜎√𝑇)]
+𝐹 = 𝑅 × [(𝐻⁄𝑆)𝜇𝑙𝑖𝑚 +𝜆𝑙𝑖𝑚 × N(𝜂𝑧) + (𝐻⁄𝑆)𝜇𝑙𝑖𝑚−𝜆𝑙𝑖𝑚 × N(𝜂𝑧 − 2𝜂𝜆𝜎√𝑇)]
+𝑥1 =
+𝑦1 =
+𝑧=
+ln(𝑆⁄𝐾 )
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
+ln(𝐻 2 ⁄𝑆𝐾 )
+𝜎√𝑇
+ln(𝐻⁄𝑆)
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
++ 𝜆𝜎√𝑇
+𝜇𝑙𝑖𝑚 =
+max {𝜇,
+{
+min {𝜆, abs (
+𝜆𝑙𝑖𝑚 =
+{
+ln(10300 )
+ln(𝐻⁄𝑆)
+𝜎√𝑇
+ln(𝐻⁄𝑆)
+𝑦2 =
+𝜇=
+min {𝜇,
+ln(𝑆⁄𝐻 )
+𝑥2 =
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
+𝑖 − 𝑐 − 𝜎 2 ⁄2
+𝜎2
+ln(10300 )
+ln(𝐻⁄𝑆) × 2
+},
+𝜆 = √𝜇2 +
+2𝑖
+𝜎2
+se 𝐻 > 𝑆 e 𝜇 > 0
+ln(10300 )
+} , se 𝐻 < 𝑆 e 𝜇 < 0
+ln(𝐻⁄𝑆) × 2
+𝜇,
+para demais casos
+− 𝜇𝑙𝑖𝑚 ) , abs (
+ln(10300 )
+ln(𝐻⁄𝑆)
+)} ,
+se (𝐻 > 𝑆 e 𝜇 > 0) ou (𝐻 < 𝑆 e 𝜇 < 0)
+ln(10300 )
+min {𝜆, abs (
+)} , caso contrário
+ln(𝐻⁄𝑆)
+Onde:
+𝑃𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-in [Knock-in barrier option];
+𝑃𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-out [Knock-out barrier option];
+𝑃𝐺 (. ): Fórmula Geral para apreçamento de contratos de opções (Garman) [Garman option pricing];
+𝐻′(. ): Fórmula para ajuste de barreiras de opções flexíveis [adjusted barriers];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐻: Valor da barreira knock-in ou knock-out [knock-in/out barrier value];
+49
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑅: Valor do rebate [rebate];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+𝜂: Indicador de barreira up ou down [up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+d) Fórmula para apreçamento de opções flexíveis com uma barreira simples e uma Knock-in
+Limit and Knock-in Barrier Flexible Option Pricing
+𝑃𝑆,𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+= 𝑃𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) − 𝑃𝐾𝑖𝑛 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+Onde:
+𝑃𝑆,𝐾𝑖𝑛 (. ): Prêmio da opção [limit and knock-in option value];
+𝑃𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-in [knock-in option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻: Valor da barreira knock-in [knock-in barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+e) Fórmula para apreçamento de opções flexíveis com uma barreira simples e uma Knock-out
+Limit and Knock-out Barrier Flexible Option Pricing
+Se a barreira foi atingida previamente:
+If the barrier has been previously breached:
+𝑃𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂) = 𝑅
+Durante o holding period, a barreira foi atingida no dia t se:
+During the holding period, barrier is breached at t if:
+𝑆 ≤ 𝐻; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻; se 𝜂 = −1
+50
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Senão:
+Else:
+𝑃𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+= 𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑹; 𝜂) − 𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝟎; 𝜂)
+Onde:
+𝑃𝑆,𝐾𝑜𝑢𝑡 (. ): Prêmio da opção [limit and knock-out option value];
+𝑃𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-out [knock-out option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻: Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+f)
+Fórmula para apreçamento de opções flexíveis com uma barreira Knock-in e uma Knock-out
+Knock-in and Knock-out Barrier Flexible Option Pricing
+Se a barreira Knock-out foi atingida previamente:
+If the Knock-out barrier has been previously breached:
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = 𝑅
+Durante o holding period, a barreira Knock-out foi atingida no dia t se:
+During the holding period, the Knock-out barrier is breached at t if:
+𝑆 ≤ 𝐻𝑜𝑢𝑡 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑜𝑢𝑡 ; se 𝜂 = −1
+Senão, se a barreira Knock-in foi atingida previamente:
+Else, if the Knock-in barrier has been previously breached:
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = 𝑃𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑜𝑢𝑡 )
+Durante o holding period, a barreira Knock-in foi atingida no dia t se:
+During the holding period, the Knock-in barrier is breached at t if:
+𝑆 ≤ 𝐻𝑖𝑛 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑖𝑛 ; se 𝜂 = −1
+Senão:
+Else:
+51
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Se 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+= 𝑃𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+− 𝑃𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
++ 𝑃𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+− 𝑃𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+Se 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = 𝑃𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+Onde:
+𝑃𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Prêmio da opção [option value];
+𝑃𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-in [knock-in option value];
+𝑃𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com barreira Knock-out [knock-out option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+𝜂𝑜𝑢𝑡 : Indicador up ou down da barreira out [knock-out barrier up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+g) Fórmula para apreçamento de opções flexíveis com uma barreira simples, uma Knock-in e uma
+Knock-out
+Limit, Knock-in and Knock-out Barrier Flexible Option Pricing
+Se a barreira Knock-out foi atingida previamente:
+If the Knock-out barrier has been previously breached:
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = 𝑅
+Durante o holding period, a barreira Knock-out foi atingida no dia t se:
+During the holding period, the Knock-out barrier is breached at t if:
+𝑆 ≤ 𝐻𝑜𝑢𝑡 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑜𝑢𝑡 ; se 𝜂 = −1
+Senão, se a barreira Knock-in foi atingida previamente:
+Else, if the Knock-in barrier has been previously breached:
+52
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = 𝑃𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑜𝑢𝑡 )
+Durante o holding period, a barreira Knock-in foi atingida no dia t se:
+During the holding period, the Knock-in barrier is breached at t if:
+𝑆 ≤ 𝐻𝑖𝑛 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑖𝑛 ; se 𝜂 = −1
+Senão:
+Else:
+Se 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+= 𝑃𝑆,𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝐵; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+− 𝑃𝑆,𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝐵; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+Se 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+= 𝑃𝑆,𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝐵; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+Onde:
+𝑃𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Prêmio da opção [option value];
+𝑃𝑆,𝐾𝑖𝑛 (. ): Fórmula para apreçamento de contratos de opções com uma barreira simples e uma Knock-in [limit
+and knock-in option value];
+𝑃𝑆,𝐾𝑜𝑢𝑡 (. ): Fórmula para apreçamento de contratos de opções com uma barreira simples e uma Knock-out [limit and knock-out option value];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+𝜂𝑜𝑢𝑡 : Indicador up ou down da barreira out [knock-out barrier up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+h) Fórmula Geral para apreçamento de contratos de opções flexíveis no vencimento (Valor Intrínseco)
+Flexible Option Intrinsic Value Pricing
+53
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝐼𝐹𝑙𝑒𝑥 (𝑁; 𝑆; 𝐾; 𝜑; Θ)
+𝑅; se a opção possui 𝑘𝑛𝑜𝑐𝑘 − 𝑖𝑛 e este não foi atingido [𝑢𝑛𝑏𝑟𝑒𝑎𝑐ℎ𝑒𝑑 𝑘𝑛𝑜𝑐𝑘 − 𝑖𝑛]
+𝑅; se a opção possui 𝑘𝑛𝑜𝑐𝑘 − 𝑜𝑢𝑡 e este foi atingido [𝑢𝑛𝑏𝑟𝑒𝑎𝑐ℎ𝑒𝑑 𝑘𝑛𝑜𝑐𝑘 − 𝑜𝑢𝑡]
+= 𝑁 × max(𝜑 × (min(𝑆, 𝐵) − 𝐾); 0) ; se 𝜑 = 1 e a opção possui barreira simples [𝑐𝑎𝑙𝑙 𝑙𝑖𝑚𝑖𝑡 𝑏𝑎𝑟𝑟𝑖𝑒𝑟]
+𝑁 × max(𝜑 × (max(𝑆, 𝐵) − 𝐾); 0) ; se 𝜑 = −1 e a opção possui barreira simples [𝑝𝑢𝑡 𝑙𝑖𝑚𝑖𝑡 𝑏𝑎𝑟𝑟𝑖𝑒𝑟]
+𝑁 × max(𝜑 × (𝑆 − 𝐾); 0) ; qualquer outro caso [𝑎𝑛𝑦 𝑜𝑡ℎ𝑒𝑟 𝑐𝑎𝑠𝑒]
+{
+Durante o holding period, a barreira Knock-in foi atingida no dia t se:
+During the holding period, knock-in barrier is breached at t if:
+𝑆 ≤ 𝐻𝑖𝑛 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑖𝑛 ; se 𝜂 = −1
+Durante o holding period, a barreira Knock-out foi atingida no dia t se:
+During the holding period, knock-out barrier is breached at t if:
+𝑆 ≤ 𝐻𝑜𝑢𝑡 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑜𝑢𝑡 ; se 𝜂 = −1
+Onde:
+𝑃𝐼𝐹𝑙𝑒𝑥 (. ): Prêmio da opção [option value];
+𝑁: Valor nocional do contrato [notional];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible option parameters].
+𝚯 é composto por:
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝐻𝑖𝑛 : Valor da barreira Knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira Knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+3.6.
+
+Títulos Públicos e Privados / Corporate and Government Bonds
+a) Fórmula Geral para apreçamento de Títulos pré-fixados
+Prefixed Bond Pricing
+𝑃𝑃𝑅 (𝑁; 𝑖) =
+𝑁
+𝑖
+Onde:
+𝑃𝑃𝑅 (. ): Valor presente do título [bond present value];
+𝑁: Valor nocional do título [notional];
+𝑖: Taxa de juro, ao período e em fator, para o prazo do título [interest rate].
+
+54
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+b) Fórmula Geral para apreçamento de Títulos pré-fixados com spread
+Prefixed Bond Pricing
+𝑃𝑃𝑅𝑆 (𝑁; 𝑖; 𝑠) =
+𝑁
+𝑖×𝑠
+Onde:
+𝑃𝑃𝑅𝑆 (. ): Valor presente do título [bond present value];
+𝑁: Valor nocional do título [notional];
+𝑖: Taxa de juro, ao período e em fator, para o prazo do título [interest rate];
+𝑠: Spread de crédito, ao período e em fator, para o prazo do título [spread].
+
+c) Fórmula para apreçamento de Títulos pré-fixados com pagamento de cupons
+Prefixed Coupon Bond Pricing
+𝑛
+1⁄𝑝
+(1 + 𝑟)
+𝑃𝑃𝑅𝐶 (𝑁; 𝑖; 𝑟; 𝑛; 𝑝) = 𝑁 × (1⁄𝑖 + ∑
+𝑇
+𝑖𝑗
+−1
+)
+𝑗=1
+Onde:
+𝑃𝑃𝑅𝐶 (. ): Valor presente do título [bond present value];
+𝑁: Valor nocional do título [notional];
+𝑖 𝑇 : Taxa de juro, ao período e em fator, para o prazo do título [interest rate];
+𝑖𝑗 : Taxa de juro, ao período e em fator, para o prazo do cupom [interest rate];
+𝑟: Taxa de juro pré-fixada [pre-fixed interest rate];
+𝑛: Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency];
+𝑇: Prazo para vencimento do título, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+d) Fórmula para atualização do Valor Nocional de um título pós-fixado
+Postfixed Notional Current Value
+𝑉𝑁𝐴 𝑇𝑃 (𝑉0 ; 𝑆; 𝑆0 ) = 𝑉0 ×
+𝑆
+𝑆0
+Onde:
+𝑉𝑁𝐴 𝑇𝑃 (. ): Valor Nocional Atualizado do título pós-fixado [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value].
+
+e) Fórmula para atualização do Valor Nocional de um título pós-fixado com correção
+55
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Postfixed Accrual Notional Current Value
+𝑉𝑁𝐴𝑃𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼) = 𝑉0 × 𝐼 ×
+𝑆
+𝑆0
+Onde:
+𝑉𝑁𝐴𝑃𝐴𝐶𝑅 (. ): Valor Nocional Atualizado do título pós-fixado com correção [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value];
+𝐼: Valor do índice pro-rata de correção referente ao período entre a última divulgação e a data de referência
+[pro-rata accrual index].
+
+f)
+Fórmula para apreçamento de Títulos pós-fixados
+Postfixed Bond Pricing
+𝑃𝑃𝑂 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖) =
+𝑉𝑁𝐴 𝑇𝑃 (𝑉0 ; 𝑆; 𝑆0 )
+𝑖
+Onde:
+𝑃𝑃𝑂 (. ): Valor presente do título [bond present value];
+𝑉𝑁𝐴 𝑇𝑃 (. ): Fórmula Geral para atualização do valor nocional do título [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value];
+𝑖: Taxa de juros, ao período e em fator, para o prazo do título [interest rate].
+
+g) Fórmula para apreçamento de Títulos pós-fixados com pagamento de cupons
+Postfixed Coupon Bond Pricing
+𝑛
+1⁄𝑝
+(1 + 𝑟)
+𝑃𝑃𝑂𝐶 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖; 𝑟; 𝑛; 𝑝) = 𝑉𝑁𝐴 𝑇𝑃 (𝑉0 ; 𝑆; 𝑆0 ) × (1⁄𝑖 + ∑
+𝑇
+𝑖𝑗
+−1
+)
+𝑗=1
+Onde:
+𝑃𝑃𝑂𝐶 (. ): Valor presente do título [bond present value];
+𝑉𝑁𝐴 𝑇𝑃 (. ): Fórmula Geral para atualização do valor nocional do título [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value];
+𝑖 𝑇 : Taxa de juros, ao período e em fator, para o prazo do título [bond maturity interest rate];
+𝑖𝑗 : Taxa de juros, ao período e em fator, para o prazo do cupom [coupon maturity interest rate];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑛: Número de cupons restantes [coupons quantity];
+56
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+h) Fórmula para apreçamento de Títulos pós-fixados com correção e pagamento de cupons
+Postfixed Accrual Coupon Bond Pricing
+𝑛
+1⁄𝑝
+(1 + 𝑟)
+𝑃𝑃𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼; 𝑖; 𝑟; 𝑛; 𝑝) = 𝑉𝑁𝐴𝑃𝐴𝐶𝑅 (𝑉0 ; 𝑆; 𝑆0 ; 𝐼) × (1⁄𝑖 + ∑
+𝑇
+𝑖𝑗
+−1
+)
+𝑗=1
+Onde:
+𝑃𝑃𝐴𝐶𝑅 (. ): Valor presente do título [bond present value];
+𝑉𝑁𝐴𝑃𝐴𝐶𝑅 (. ): Fórmula para atualização do valor nocional do título com correção [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value];
+𝐼: Valor do índice pro-rata de correção referente ao período entre a última divulgação e a data de referência
+[pro-rata accrual index];
+𝑖 𝑇 : Taxa de juros, ao período e em fator, para o prazo do título [bond maturity interest rate];
+𝑖𝑗 : Taxa de juros, ao período e em fator, para o prazo do cupom [coupon maturity interest rate];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑛: Número de cupons restantes [coupons quantity];
+𝑝: Periodicidade de pagamento do cupom [coupon frequency].
+
+i)
+Fórmula para apreçamento de Títulos pós-fixados baseados em taxa Libor
+First-Coupon Postfixed Bond Pricing
+(1 + 𝑟)𝑡1⁄252
+𝑃𝐿𝐼𝐵 (𝑉0 ; 𝑆; 𝑆0 ; 𝑖; 𝑟; 𝑡1) = 𝑉𝑁𝐴 𝑇𝑃 (𝑉0 ; 𝑆; 𝑆0 ) ×
+𝑖𝑡1
+Onde:
+𝑃𝐿𝐼𝐵 (. ): Valor presente do título [bond present value];
+𝑉𝑁𝐴 𝑇𝑃 (. ): Fórmula Geral para atualização do valor nocional do título [notional current value];
+𝑉0 : Valor Nocional Atualizado do título pós-fixado na data de referência [notional reference date value];
+𝑆: Valor do índice de correção do título atual [current index value];
+𝑆0 : Valor do índice de correção do título da data de referência [reference date index value];
+𝑟: Taxa de juros pré-fixada [pre-fixed interest rate];
+𝑡1: Prazo para o próximo cupom [next coupon maturity];
+𝑖𝑡1 : Taxa de juros, ao período e em fator, para o prazo do próximo cupom [interest rate].
+
+j)
+Fórmula para apreçamento de Cédulas de Produtos Rurais pré-fixadas (CPR)
+Prefixed Rural Product Note Pricing
+𝑃𝐶𝑃𝑅𝐸 (𝑁; 𝑖; 𝑠) = 𝑃𝑃𝑅𝑆 (𝑁; 𝑖; 𝑠)
+57
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Onde:
+𝑃𝐶𝑃𝑅𝐸 (. ): Valor presente da cédula [note present value];
+𝑃𝑃𝑅𝑆 (. ): Fórmula Geral para apreçamento de títulos pré-fixados com spread [bond present value];
+𝑁: Valor nocional da cédula [notional];
+𝑖: Taxa de juro, ao período e em fator, para o prazo da cédula [interest rate];
+𝑠: Spread de crédito, ao período e em fator, para o prazo da cédula [spread].
+
+k) Fórmula para apreçamento de Cédulas de Produtos Rurais pós-fixadas (CPR)
+Postfixed Rural Product Note Pricing
+𝑃𝐶𝑃𝑂𝑆 (𝐻; 𝑄; 𝐹; 𝑖; 𝑠) =
+𝐻×𝑄×𝐹
+𝑖×𝑠
+Onde:
+𝑃𝐶𝑃𝑂𝑆 (. ): Valor presente da cédula [note present value];
+𝐻: Taxa de câmbio auxiliar [helper exchange rate];
+𝑄: Quantidade ofertada na cédula [offer quantity];
+𝐹: Valor futuro para o prazo da cédula [forward value];
+𝑖: Taxa de juro, ao período e em fator, para o prazo da cédula [interest rate];
+𝑠: Spread de crédito, ao período e em fator, para o prazo da cédula [spread].
+
+l)
+Fórmula para apreçamento de Títulos utilizando Duration
+Duration Bond Pricing
+𝑃𝐷 (𝑉0 ; 𝐷; 𝑦𝑡,𝑇 ; 𝑦0,𝑇 ) =
+𝑃0
+× (1 − 𝐷 × (𝑦𝑡,𝑇 − 𝑦0,𝑇 ))
+100
+Onde:
+𝑃𝐷 (. ): Valor presente do título [bond present value];
+𝑃0 : MtM do título na data de cálculo [present value];
+𝐷: Valor da Duration do título [duration];
+𝑦𝑡,𝑇 : Taxa de correção do título, ao ano, referente ao prazo entre a data corrente e a data de vencimento [current date yield];
+𝑦0,𝑇 : Taxa de correção do título, ao ano, referente ao prazo entre a data de referência e a data de vencimento
+[reference date yield].
+
+4. Fórmulas de Delta de Opções / Option Delta Formulas
+4.1.
+
+Opções Padronizadas / Plain Vanilla Options
+a) Fórmula Geral para cálculo do delta de contratos de opções (Garman)
+Garman Option Delta
+∆𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝜑 × 𝑒 −𝑐.𝑇 × N(𝑑1 )
+58
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝜎2
+ln(𝑆⁄𝐾 ) + (𝑖 − 𝑐 + 2 ) × 𝑇
+𝑑1 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝜑 ×
+𝜎 × √𝑇
+Onde:
+∆𝐺 (. ): Delta da opção [option delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑁(. ): Função de probabilidade Normal Padrão [standard normal cdf];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+b) Fórmula para cálculo do delta de opções sobre futuro de DI (Black modificado)
+DI Future Black Option Delta
+∆𝐷𝐼 (𝐹; 𝐾; 𝑖𝑜 ; 𝑖𝑘 ; 𝜎; 𝑇𝑑𝑐,𝑜 ; 𝑇𝑑𝑐,𝑓 ; 𝑇𝑑𝑠,𝑜 ; 𝑇𝑑𝑠,𝑓 ; 𝜑) = ∆𝐺 (𝑆; 𝐾 ′ ; 𝑖𝑜 ; 𝑖𝑜 ; 𝜎; 𝑇𝑑𝑐,𝑜 ; 𝜑)
+𝐾⁄ − 1
+𝐹
+𝑆=
+𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜
+𝐾′ =
+(1 + 𝑖𝑘 )(𝑇𝑑𝑠,𝑓 −𝑇𝑑𝑠,𝑜 ) − 1
+𝑇𝑑𝑐,𝑓 − 𝑇𝑑𝑐,𝑜
+Onde:
+∆𝐷𝐼 (. ): Delta da opção [option delta];
+∆𝐺 (. ): Fórmula Geral para cálculo do delta [Garman Delta];
+𝐹: Valor do futuro ativo-objeto da opção [long future value];
+𝐾: Valor do futuro cujo vencimento coincide com o vencimento da opção [short future value];
+𝑖𝑘 : Taxa de juro de exercício da opção, ao ano, para o prazo do contrato [strike interest rate];
+𝑖𝑜 : Taxa de juro interna livre de risco para o prazo do contrato – taxa continuamente composta [domestic interest rate];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇𝑑𝑐,𝑜 : Prazo para vencimento da opção, em dias corridos, em anos [calendar days maturity];
+𝑇𝑑𝑐,𝑜 = 𝑑𝑐 ⁄360
+𝑇𝑑𝑐,𝑓 : Prazo para vencimento do futuro objeto, em dias corridos, em anos [underlying calendar days maturity];
+𝑇𝑑𝑐,𝑓 = 𝑑𝑐 ⁄360
+𝑇𝑑𝑠,𝑜 : Prazo para vencimento da opção, em dias de saque, em anos [reserve days maturity];
+𝑇𝑑𝑠,𝑜 = 𝑑𝑠 ⁄252
+𝑇𝑑𝑠,𝑓 : Prazo para vencimento do futuro objeto, em dias de saque, em anos [underlying reserve days maturity].
+𝑇𝑑𝑠,𝑓 = 𝑑𝑠 ⁄252
+59
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+c) Fórmula Geral para cálculo do ativo-objeto de uma opção em função do delta [Garman]
+Garman Option Underlying from Delta
+2
+𝑆𝐺 (∆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) = 𝐾 ⁄[exp [−𝜑 × 𝑁 −1 (|∆| × 𝑒 𝑐.𝑇 ) × 𝜎√𝑇 + (𝑖 − 𝑐 + 𝜎 ⁄2) × 𝑇]]
+Onde:
+𝑆𝐺 (. ): Ativo-objeto da opção a partir do delta [option underlying];
+|∆|: Delta da opção (valor absoluto) [delta absolute value];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑁 −1 (. ): Função inversa de probabilidade Normal Padrão acumulada [inverse standard normal cdf];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+d) Fórmula para cálculo do futuro-objeto de uma opção sobre futuro de DI em função do delta (Black
+Modificado)
+DI Future Black Underlying from Delta
+𝐹𝐷𝐼 (∆; 𝐾; 𝑖𝑜 ; 𝑖𝑘 ; 𝜎; 𝑇𝑑𝑠,𝑜 ; 𝑇𝑑𝑠,𝑓 ; 𝜑)
+= 𝐾 ⁄[
+(1 + 𝑖𝑘 )(𝑇𝑑𝑠,𝑓−𝑇𝑑𝑠,𝑜 ) − 1
+2
+exp [−𝜑 × 𝑁 −1 (|∆| × 𝑒 𝑖𝑜 .𝑇𝑑𝑠,𝑜 ) × 𝜎√𝑇𝑑𝑠,𝑜 + 𝜎 ⁄2 × 𝑇𝑑𝑠,𝑜 ]
++ 1]
+Onde:
+𝐹𝐷𝐼 (. ): Futuro-objeto da opção a partir do delta [option underlying from delta];
+|∆|: Delta da opção (valor absoluto) [delta absolute value];
+𝐾: Valor do futuro cujo vencimento coincide com o vencimento da opção [short future value];
+𝑖𝑘 : Taxa de juro de exercício da opção, ao ano, para o prazo do contrato [strike interest rate];
+𝑖𝑜 : Taxa de juro interna livre de risco para o prazo do contrato – taxa continuamente composta [domestic interest rate];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑁 −1 (. ): Função inversa de probabilidade Normal Padrão [inverse standard normal cdf];
+𝑇𝑑𝑠,𝑜 : Prazo para vencimento da opção, em dias de saque, em anos [reserve days maturity];
+𝑇𝑑𝑠,𝑜 = 𝑑𝑠 ⁄252
+𝑇𝑑𝑠,𝑓 : Prazo para vencimento do futuro objeto, em dias de saque, em anos [underlying reserve days maturity].
+𝑇𝑑𝑠,𝑓 = 𝑑𝑠 ⁄252
+60
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+4.2.
+
+Opções Flexíveis / Flexible Options
+a) Fórmula Geral para cálculo do delta de opções flexíveis
+Flexible Option Delta
+∆𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+∆𝑆 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵)
+∆𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+∆𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+∆𝐹𝑙𝑒𝑥 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; Θ) =
+∆𝑆,𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+∆𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+{∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+Onde:
+∆𝐹𝑙𝑒𝑥 (. ): Delta da opção [option delta];
+∆𝐺 (. ): Fórmula Geral para cálculo do delta de contratos de opções (Garman) [Garman option delta];
+∆𝑆 (. ): Fórmula para cálculo do delta de contratos de opções com barreira simples [limit barrier option delta];
+∆𝐾𝑖𝑛 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-in [knock-in barrier option
+delta];
+∆𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-out [knock-out barrier option delta];
+∆𝑆,𝐾𝑖𝑛 (. ): Fórmula para cálculo do delta de contratos de opções com barreiras simples e Knock-in [limit and
+knock-in barrier option delta];
+∆𝑆,𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreiras simples e Knock-out [limit and
+knock-out barrier option delta];
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreiras Knock-in e Knock-out [knockin and knock-out barrier option delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+Θ: Conjunto de parâmetros de opções flexíveis [flexible option parameters];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+𝚯 é composto por:
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝐻: Valor da barreira knock-in ou knock-out [knock-in/out barrier value];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+61
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝜂𝑜𝑢𝑡 : Indicador de barreira up ou down da barreira out [knock-out barrier up or down indicator].
+
+b) Fórmula para cálculo do delta de opções flexíveis com barreira simples
+Limit Barrier Flexible Option Delta
+∆𝑆 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵) = ∆𝐺 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑) − ∆𝐺 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+Onde:
+∆𝑆 (. ): Delta da opção [option value];
+∆𝐺 (. ): Fórmula Geral para cálculo do delta de contratos de opções (Garman) [Garman option delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+c) Fórmula para cálculo do delta de opções flexíveis com barreira Knock-in ou Knock-out
+Knock-in/ Knock-out Barrier Flexible Option Delta
+Se a barreira foi atingida previamente:
+If the barrier has been previously breached:
+∆𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) = ∆𝐺 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+Durante o holding period, a barreira foi atingida no dia t se:
+During the holding period, barrier is breached at t if:
+𝑆 ≤ 𝐻; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻; se 𝜂 = −1
+Senão:
+Else:
+Abaixo, considerar ajuste de barreiras por: 𝐻 = 𝐻′(𝐻; 𝑆; 𝜎)
+Consider bellow adjusted barriers as: 𝐻 = 𝐻′(𝐻; 𝑆; 𝜎)
+62
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+∆𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝜕𝐶 𝜕𝐸
+se (𝜂 = 1 e 𝜑 = 1 e 𝐾 > 𝐻) ou ( 𝜂 = −1 e 𝜑 = −1 e 𝐾 < 𝐻)
++
+,
+𝜕𝑆 𝜕𝑆
+𝜕𝐴 𝜕𝐵 𝜕𝐷 𝜕𝐸
+−
++
++
+, se (𝜂 = 1 e 𝜑 = 1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 > 𝐻)
+𝜕𝑆 𝜕𝑆 𝜕𝑆 𝜕𝑆
+=
+𝜕𝐵 𝜕𝐶 𝜕𝐷 𝜕𝐸
+−
++
++
+, se (𝜂 = 1 e 𝜑 = −1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 < 𝐻)
+𝜕𝑆 𝜕𝑆 𝜕𝑆 𝜕𝑆
+𝜕𝐴 𝜕𝐸
+se (𝜂 = 1 e 𝜑 = −1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 > 𝐻)
++
+,
+{
+𝜕𝑆 𝜕𝑆
+∆𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+𝜕𝐴 𝜕𝐶 𝜕𝐹
+se (𝜂 = 1 e 𝜑
+−
++
+,
+𝜕𝑆 𝜕𝑆 𝜕𝑆
+𝜕𝐵 𝜕𝐷 𝜕𝐹
+se (𝜂 = 1 e 𝜑
+−
++
+,
+𝜕𝑆 𝜕𝑆 𝜕𝑆
+=
+𝜕𝐴 𝜕𝐵 𝜕𝐶 𝜕𝐷 𝜕𝐹
+−
++
+−
++
+, se (𝜂 = 1 e 𝜑
+𝜕𝑆 𝜕𝑆 𝜕𝑆 𝜕𝑆 𝜕𝑆
+𝜕𝐹
+se (𝜂 = 1 e 𝜑
+,
+{
+𝜕𝑆
+= 1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 < 𝐻)
+= 1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = −1 e 𝐾 > 𝐻)
+= −1 e 𝐾 > 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 < 𝐻)
+= −1 e 𝐾 < 𝐻) ou (𝜂 = −1 e 𝜑 = 1 e 𝐾 > 𝐻)
+Derivadas:
+Derivatives:
+𝜕𝐴 𝜕𝑝
+(𝑥 )
+=
+𝜕𝑆 𝜕𝑆 1
+𝜕𝐵 𝜕𝑝
+(𝑥 )
+=
+𝜕𝑆 𝜕𝑆 2
+𝜕𝐶 𝜕𝑞
+(𝑦 )
+=
+𝜕𝑆 𝜕𝑆 1
+𝜕𝐷 𝜕𝑞
+(𝑦 )
+=
+𝜕𝑆 𝜕𝑆 2
+𝜕𝑝
+𝜑
+𝐾
+𝜑
+(𝑥) = 𝑒 −𝑖𝑇 × {𝑒 (𝑖−𝑐).𝑇 × [N(𝜑𝑥) +
+× N′(𝜑𝑥)] − ×
+× N′ (𝜑 × (𝑥 − 𝜎√𝑇))}
+𝜕𝑆
+𝑆
+𝜎√𝑇
+𝜎√𝑇
+𝜕𝑞
+𝐻 2𝜇𝑙𝑖𝑚
+(𝑥) = 𝑒 −𝑖𝑇 × ( )
+𝜕𝑆
+𝑆
+𝐻 2
+𝜂
+× {− ( ) × 𝑒 (𝑖−𝑐).𝑇 × [(2𝜇 + 1) × N(𝜂𝑥) +
+× N′(𝜂𝑥)]
+𝑆
+𝜎√𝑇
+𝐾
+𝜂
++ × [(2𝜇) × N (𝜂 × (𝑥 − 𝜎√𝑇)) +
+× N′ (𝜂 × (𝑥 − 𝜎√𝑇))]}
+𝑆
+𝜎√𝑇
+𝜕𝐸
+𝑒 −𝑖.𝑇
+𝜂
+=𝑅×
+×{
+× N′ (𝜂 × (𝑥2 − 𝜎√𝑇))
+𝜕𝑆
+𝑆
+𝜎√𝑇
+𝐻 2𝜇𝑙𝑖𝑚
+𝜂
++( )
+× [2𝜇 × N (𝜂 × (𝑦2 − 𝜎√𝑇)) +
+× N′ (𝜂 × (𝑦2 − 𝜎√𝑇))]}
+𝑆
+𝜎√𝑇
+63
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝜕𝐹
+𝑅
+𝐻 𝜇𝑙𝑖𝑚
+=− ×( )
+𝜕𝑆
+𝑆
+𝑆
+𝐻 𝜆𝑙𝑖𝑚
+𝜂
+× {( )
+× [(𝜇 + 𝜆) × N(𝜂𝑧) +
+× N′(𝜂𝑧)]
+𝑆
+𝜎√𝑇
+𝐻 −𝜆𝑙𝑖𝑚
++( )
+𝑆
+× [(𝜇 − 𝜆) × N (𝜂 × (𝑧 − 2𝜆𝜎√𝑇)) +
+𝜂
+𝜎√𝑇
+× N′ (𝜂 × (𝑧 − 2𝜆𝜎√𝑇))]}
+Variáveis auxiliares:
+Auxiliary variables:
+𝑥1 =
+𝑦1 =
+𝑧=
+ln(𝑆⁄𝐾 )
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
+ln(𝐻 2 ⁄𝑆𝐾 )
+𝜎√𝑇
+ln(𝐻⁄𝑆)
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
++ 𝜆𝜎√𝑇
+𝜇𝑙𝑖𝑚 =
+max {𝜇,
+{
+𝜆𝑙𝑖𝑚 =
+ln(10300 )
+ln(𝐻⁄𝑆)
+𝜎√𝑇
+ln(𝐻⁄𝑆)
+𝑦2 =
+𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
++ (1 + 𝜇) × 𝜎√𝑇
+𝑖 − 𝑐 − 𝜎 2 ⁄2
+𝜇=
+𝜎2
+min {𝜇,
+min {𝜆, abs (
+ln(𝑆⁄𝐻 )
+𝑥2 =
+ln(10300 )
+ln(𝐻⁄𝑆) × 2
+},
+𝜆 = √𝜇2 +
+2𝑖
+𝜎2
+se 𝐻 > 𝑆 e 𝜇 > 0
+ln(10300 )
+} , se 𝐻 < 𝑆 e 𝜇 < 0
+ln(𝐻⁄𝑆) × 2
+𝜇,
+para demais casos
+− 𝜇𝑙𝑖𝑚 ) , abs (
+ln(10300 )
+ln(𝐻⁄𝑆)
+)} ,
+se (𝐻 > 𝑆 e 𝜇 > 0) ou (𝐻 < 𝑆 e 𝜇 < 0)
+ln(10300 )
+{
+min {𝜆, abs (
+ln(𝐻⁄𝑆)
+)} , caso contrário
+Onde:
+∆𝐾𝑖𝑛 (. ): Fórmula de delta de opções com barreira Knock-in [Knock-in barrier option delta];
+∆𝐾𝑜𝑢𝑡 (. ): Fórmula de delta de opções com barreira Knock-out [Knock-out barrier option delta];
+∆𝐺 (. ): Fórmula Geral para cálculo do delta de contratos de opções (Garman) [Garman option delta];
+𝐻′(. ): Fórmula para ajuste de barreiras de opções flexíveis [adjusted barriers];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐻: Valor da barreira knock-in ou knock-out [knock-in/out barrier value];
+64
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑅: Valor do rebate [rebate];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+N(. ): Função de Distribuição Normal Padrão Acumulada [standard normal cdf];
+N′(. ): Função Densidade da Distribuição Normal Padrão [standard normal pdf].
+
+d) Fórmula para cálculo do delta de opções flexíveis com barreira simples e uma Knock-in
+Limit and Knock-in Barrier Flexible Option Delta
+∆𝑆,𝐾𝑖𝑛 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+= ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) − ∆𝐾𝑖𝑛 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂)
+Onde:
+∆𝑆,𝐾𝑖𝑛 (. ): Delta da opção [limit and knock-in option delta];
+∆𝐾𝑖𝑛 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-in [knock-in option delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻: Valor da barreira knock-in [knock-in barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+e) Fórmula para cálculo do delta de opções flexíveis com barreira simples e uma Knock-out
+Limit and Knock-out Barrier Flexible Option Delta
+∆𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻; 𝑅; 𝜂)
+= ∆𝐾𝑜𝑢𝑡 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝑅; 𝜂) − ∆𝐾𝑜𝑢𝑡 (𝑆; 𝑩; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻; 𝟎; 𝜂)
+Onde:
+∆𝑆,𝐾𝑜𝑢𝑡 : Delta da opção [option value];
+65
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+∆𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-out [knock-out option
+delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻: Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂: Indicador de barreira up ou down [up or down indicator];
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+f)
+Fórmula para cálculo do delta de opções flexíveis com uma barreira Knock-in e uma Knock-out
+Knock-in and Knock-out Barrier Flexible Option Delta
+Se a barreira Knock-in foi atingida previamente:
+If the knock-in barrier has been previously breached:
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = ∆𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑜𝑢𝑡 )
+Durante o holding period, a barreira Knock-in foi atingida no dia t se:
+During the holding period, barrier is breached at t if:
+𝑆 ≤ 𝐻𝑖𝑛 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑖𝑛 ; se 𝜂 = −1
+Senão:
+Else:
+Se 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+= ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+− ∆𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
++ ∆𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+− ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+Se 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+Onde:
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Prêmio da opção [option delta];
+∆𝐾𝑖𝑛 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-in [knock-in option delta];
+66
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+∆𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-out [knock-out option
+delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+𝜂𝑜𝑢𝑡 : Indicador de barreira up ou down da barreira out [knock-out barrier up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+g) Fórmula para cálculo do delta de opções flexíveis com barreira simples, uma Knock-in e uma Knockout
+Limit, Knock-in and Knock-out Barrier Flexible Option Delta
+Se a barreira Knock-in foi atingida previamente:
+If the knock-in barrier has been previously breached:
+∆𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = ∆𝑆,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑜𝑢𝑡 )
+Durante o holding period, a barreira Knock-in foi atingida no dia t se:
+During the holding period, barrier is breached at t if:
+𝑆 ≤ 𝐻𝑖𝑛 ; se 𝜂 = 1
+{ 𝑡
+𝑆𝑡 ≥ 𝐻𝑖𝑛 ; se 𝜂 = −1
+Senão:
+Else:
+Se 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 = 𝜂𝑜𝑢𝑡 :
+∆𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 )
+= ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+− ∆𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
++ ∆𝐾𝑖𝑛 (𝑆; 𝑲 + 𝑹 × 𝝋; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+− ∆𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; −𝝋; 𝑯𝒐𝒖𝒕 ; 𝟎; 𝜼𝒊𝒏 )
+Se 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+If 𝜂𝑖𝑛 ≠ 𝜂𝑜𝑢𝑡 :
+∆𝑆,𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (𝑆; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑; 𝐵; 𝐻𝑖𝑛 ; 𝐻𝑜𝑢𝑡 ; 𝑅; 𝜂𝑖𝑛 ; 𝜂𝑜𝑢𝑡 ) = ∆𝑆,𝐾𝑖𝑛 (𝑆; 𝑲; 𝑖; 𝑐; 𝜎; 𝑇; 𝝋; 𝑩; 𝑯𝒊𝒏 ; 𝑹; 𝜼𝒊𝒏 )
+Onde:
+∆𝐾𝑖𝑛,𝐾𝑜𝑢𝑡 (. ): Prêmio da opção [option delta];
+67
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+∆𝐾𝑖𝑛 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-in [knock-in option delta];
+∆𝐾𝑜𝑢𝑡 (. ): Fórmula para cálculo do delta de contratos de opções com barreira Knock-out [knock-out option
+delta];
+𝑆: Preço a vista do ativo-objeto do contrato de opção [underlying];
+𝐾: Preço de exercício [strike];
+𝑖: Taxa de juro interna livre de risco – taxa continuamente composta [domestic interest rate];
+𝑐: Custo de carregamento do ativo-objeto – taxa continuamente composta [cost of carry];
+𝜎: Volatilidade da opção [volatility];
+𝜑: Indicador de opção de compra/venda (compra = 1/ venda = -1) [call/put indicator];
+𝐵: Valor da barreira simples da Opção [limit barrier value];
+𝐻𝑖𝑛 : Valor da barreira knock-in [knock-in barrier value];
+𝐻𝑜𝑢𝑡 : Valor da barreira knock-out [knock-out barrier value];
+𝑅: Valor do rebate [rebate];
+𝜂𝑖𝑛 : Indicador up ou down da barreira in [knock-in barrier up or down indicator];
+𝜂𝑜𝑢𝑡 : Indicador de barreira up ou down da barreira out [knock-out barrier up or down indicator].
+1, se Indicador de Barreira Down = "S"
+𝜂={
+−1,se Indicador de Barreira Up = "S"
+𝑇: Prazo para vencimento da opção, em anos [maturity].
+𝑇 = 𝑑𝑠 ⁄252
+68
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+5. Cálculo de Volatilidade de Opções / Options Volatility Calculation5.1.
+
+Vola-
+tilidade Implícita / Implied Volatility
+a) Cálculo da Volatilidade Implícita de uma Opção
+Option Implied Volatility
+O cálculo da Volatilidade Implícita de uma determinada opção deve ser realizado conforme os passos abaixo:
+The Implied Volatility calculation for an option is performed according to:
+1.
+
+Para cada Volatilidade Fracionada da Curva de Volatilidades por Delta referenciada pela Operação,
+calcula-se o delta correspondente:
+For each Fractional Volatility of the Delta Volatility Curve the respective delta is assessed:
+∆0,𝑖 = ∆{𝑆, 𝐾, 𝑖, 𝑐, 𝝈𝟎,𝒊 , 𝑇, 𝜑}
+O cálculo deve ser realizado respeitando-se a configuração de barreiras da opção (ver Fórmulas de
+Delta de Opções neste documento).
+The calculation must consider modifications on delta formulas arising from barrier options (see Options
+Delta Formulas in this document).
+2.
+
+Para cada delta calculado, considere:
+For each calculated delta, consider:
+Se ∆0,𝑖 < 0,
+−∆0,𝑖 ,
+se a opção tem barreira simples [if it is a simple barrier option]
+∆0,𝑖 = {
+∆0,𝑖 + 1, se a opção não tem barreira simples [if it is not a simple barrier option]
+3.
+
+Para cada delta 0,i calculado, calcula-se o valor da Volatilidade Smile por interpolação Spline Cúbico
+Natural a partir da Curva de Volatilidades por Delta (ver Interpolação Spline Cúbico Natural de uma
+Curva a Termo neste documento), ou seja:
+For each delta 0,i, the value of the Volatility Smile is assessed using Natural Cubic Spline over the Delta
+Volatility Curve (see Natural Cubic Spline Interpolation for a Forward Curve in this document):
+𝑠𝑚𝑖𝑙𝑒
+𝜎0,𝑖
+= 𝑠𝑝𝑙𝑖𝑛𝑒{[𝜎(∆1 ), 𝜎(∆2 ), 𝜎(∆3 ), … , 𝜎(∆𝑁 )]; ∆0,𝑖 }
+𝑖 = 1,2,3, … , 𝑄
+4.
+
+Para cada valor de Volatilidade Smile calculado, calcula-se o erro quadrático a partir de sua Volatilidade Fracionada correspondente, ou seja:
+For each Volatility Smile value, the square error over the Fractional Volatility is measured:
+2
+𝑠𝑚𝑖𝑙𝑒
+𝜀𝑖 = (𝜎0,𝑖 − 𝜎0,𝑖
+)
+𝑖 = 1,2,3, … , 𝑄
+5.
+
+Obtém-se a Volatilidade Implícita (𝜎) da opção a partir da Volatilidade Fracionada correspondente ao
+menor erro quadrático, ou seja:
+The Option Implied Volatility (𝜎) is determined using the Fractional Volatility with the lowest square
+error:
+69
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑖 ∗ → 𝜀𝑖 ∗ = min(𝜀𝑖 )
+𝑖
+𝑖 = 1,2,3, … , 𝑄
+𝜎 = 𝜎0,𝑖∗
+b) Cálculo do conjunto de Volatilidades Fracionadas a partir da Superfície de Volatilidades
+Option Fractional Volatility
+Considere a seguinte representação da Curva de Volatilidades por Delta:
+Let the following vector represent the Delta Volatility Curve:
+[𝜎(∆1 ), 𝜎(∆2 ), 𝜎(∆3 ), … , 𝜎(∆𝑁 )]
+Onde:
+Where:
+∆𝑛 : Valor do Delta do n-ésimo vértice da curva [Delta Value for the curve vertex n];
+𝜎(∆𝑛 ): Valor da Volatilidade do n-ésimo vértice da curva [Volatility Value for the curve vertex n];
+𝑁: Número de vértices na curva [Number of verteces in the curve].
+Para o cálculo dos valores de Volatilidades Fracionadas, considere também a representação da seguinte Curva
+de Volatilidades Auxiliares:
+Let also the following vector represent the Auxiliary Volatility Curve:
+[𝜎(∆′1 ), 𝜎(∆′2 ), 𝜎(∆′3 ), … , 𝜎(∆′𝑃 )]
+E da lista de valores de Volatilidades Fracionadas:
+The Fractional Volatilities are expressed by:
+[𝜎0,1 , 𝜎0,2 , 𝜎0,3 , … , 𝜎0,𝑄 ]
+O cálculo dos valores de Volatilidades Fracionadas deve ser realizado conforme os passos abaixo:
+The Fractional Volatilities are calculated according:
+1.
+
+Calcule o número de vértices da Curva de Volatilidades Auxiliares:
+Calculate the number of verteces of the Auxiliary Volatility Curve:
+𝑃 = min (
+∆𝑁 − ∆1
++ 1; 𝛼)
+𝛿
+Onde:
+Where:
+𝑃: Número de vértices da Curva de Volatilidades Auxiliares [Number of verteces of the Auxiliary Volatility Curve];
+∆𝑁 : Valor do Delta do último vértice da Curva de Volatilidades por Delta [Delta Value for the last vertex of the Delta Volatility Curve];
+70
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+∆1 : Valor do Delta do primeiro vértice da Curva de Volatilidades por Delta [Delta Value for the first
+vertex of the Delta Volatility Curve];
+𝛿: Parâmetro de Incremento [Increment Parameter];
+𝛼: Parâmetro de limite [Limit Parameter].
+2.
+
+Para cada vértice i da Curva de Volatilidades Auxiliares, calcula-se o seu Delta:
+For each vertex i of the Auxiliary Volatility Curve, calculate the Delta:
+∆′𝑖 = ∆1 + (𝑖 − 1) × 𝛿
+𝑖 = 1,2,3, … , 𝑃
+3.
+
+Para cada vértice i da Curva de Volatilidades Auxiliares, calcula-se o valor da Volatilidade por interpolação Spline Cúbico Natural a partir da Curva de Volatilidades por Delta (ver Interpolação Spline Cúbico
+Natural de uma Curva a Termo neste documento), ou seja:
+For each vertex i of the Auxiliary Volatility Curve, calculate the Volatility value using Natural Cubic Spline
+Interpolation over the Delta Volatility Curve (see Natural Cubic Spline Interpolation for a Forward Curve
+in this document):
+𝜎(∆′𝑖 ) = 𝑠𝑝𝑙𝑖𝑛𝑒{[𝜎(∆1 ), 𝜎(∆2 ), 𝜎(∆3 ), … , 𝜎(∆𝑁 )]; ∆′𝑖 }
+𝑖 = 1,2,3, … , 𝑃
+4.
+
+Considere:
+Define:
+𝜎𝑚𝑎𝑥 = max 𝜎(∆′ 𝑖 )
+𝑖
+𝜎𝑚𝑖𝑛 = min 𝜎(∆′𝑖 )
+𝑖
+5.
+
+Calcule a quantidade de valores de Volatilidades Fracionadas:
+Calculate the number of Fractional Volatilities values:
+𝜎𝑚𝑎𝑥 − 𝜎𝑚𝑖𝑛
+𝑄 = min (
++ 1; 𝛽)
+𝛾
+Onde:
+Where:
+𝑄: Número de vértices da Curva de Volatilidades Fracionadas (arredondado para o inteiro posterior
+sem casas decimais) [Number of verteces of the Auxiliary Volatility Curve (rounding for the largest integer value)];
+𝜎𝑚𝑎𝑥 : Valor da maior volatilidade da Curva de Volatilidades Fracionadas [Largest Volatility Value for
+Fractional Volatility Curve];
+𝜎𝑚𝑖𝑛 : Valor da menor volatilidade da Curva de Volatilidades Fracionadas [Lowest Volatility Value for
+Fractional Volatility Curve];
+𝛾: Parâmetro de Incremento [Increment Parameter];
+𝛽: Parâmetro de limite [Limit Parameter].
+6.
+
+Finalmente, para cada item i da lista de Volatilidades Fracionadas, calcula-se o seu valor:
+Finally, for each item i of the Fractional Volatilities calculate:
+𝜎0,𝑖 = min(𝜎𝑚𝑖𝑛 + (𝑖 − 1) × 𝛾; 𝜎𝑚𝑎𝑥 )
+𝑖 = 1,2,3, … , 𝑄
+71
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+6. Margem Mínima / Minimum Margin Call
+6.1.
+
+Margem Mínima de Opções / Option Minimum Margin Call
+a) Cálculo da Margem Mínima de uma Carteira de Opções
+Option Minimum Margin Call
+O cálculo do Prêmio Mínimo de opções deve ocorrer considerando-se apenas a carteira de opções sem ajuste
+do participante, e apenas o pior cenário de risco obtido pelo CORE. Este processo é válido para o CORE 0 e
+CORE M.
+During Option Minimum Margin Call calculation, only the participant’s non-future style options portfolio and
+the worst case risk scenario should be considered for evaluation. This process is applicable for CORE 0 and CORE
+M.
+No contexto do cálculo da Margem Mínima, definimos o ativo-objeto como sendo os instrumentos que possuem os mesmos atributos, conforme a seguinte regra:
+In this context, the underlying is defined as instruments with the same attributes, according with following
+rules:
+Para as opções sobre ações, os atributos são [For Equity Options, the attributes must be]:
+•
+•
+•
+•
+Segmento [Segment]
+Mercado [Market]
+Mercadoria [Commodity]
+Símbolo [Symbol]
+Para as demais opções, os atributos são [For others Options, the attributes must be]:
+•
+•
+•
+Segmento [Segment]
+Mercado [Market]
+Mercadoria [Commodity]
+Considerando-se um mesmo ativo-objeto e desprezando-se as opções com ajuste, seja a seguinte representação da carteira de opções sem ajuste do participante:
+Let the participant’s portfolio of non-future style options with a same given underlying be as follows:
+Opções Call: [𝑐1 , 𝑐2 , … , 𝑐𝑛𝑐 ]
+Opções Put: [𝑝1 , 𝑝2 , … , 𝑝𝑛𝑝 ]
+Caso não haja posições vendidas (quantidade < 0) na carteira, o processo de cálculo do prêmio mínimo deve
+ser desconsiderado.
+If there are no short option positions in the portfolio (quantity < 0), this process should be finished.
+Somando-se as quantidades das posições da carteira de opções, caso o resultado dessa soma seja maior ou
+igual a zero, o processo de cálculo do prêmio mínimo também deve ser desconsiderado.
+By adding up the quantities of the portfolio option positions, if the result is greater than or equal to zero, this
+process should be finished.
+
+72
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+O cálculo do Prêmio Mínimo da carteira de opções sem ajuste deve ser realizado conforme os passos abaixo:
+Option Minimum Margin Call calculation is described on the following steps:
+1.
+
+Calcule o delta para cada uma das opções da carteira do participante:
+Calculate option delta for each option in the participant’s portfolio:
+𝛿 = ∆{𝑆, 𝐾, 𝑖, 𝑐, 𝜎, 𝑇, 𝜑}
+O cálculo deve ser realizado respeitando-se a configuração de barreiras da opção (ver Fórmulas de
+Delta de Opções neste documento). O cálculo do delta para cada uma das opções da carteira resultará
+nos vetores:
+This calculation should consider the barriers of flexible options (see Option Delta Formulas in this document). Option delta calculation results in the following vectors:
+Opções Call: [𝛿𝑐1 , 𝛿𝑐2 , … , 𝛿𝑐𝑛 ]
+Opções Put: [𝛿𝑝1 , 𝛿𝑝2 , … , 𝛿𝑝𝑛 ]
+2.
+
+Considere que:
+Let:
+•
+𝑐𝑚𝑖𝑛 é a opção call de posição vendida (quantidade < 0) e cujo delta é o menor das opções
+call;
+𝑐𝑚𝑖𝑛 be the short call option (quantity < 0) which delta is the smallest among the call options;
+o Se houver mais de uma opção nesta condição, 𝑐𝑚𝑖𝑛 é aquela de maior preço de
+exercício.
+Existing more than one option with the smallest delta, let 𝑐𝑚𝑖𝑛 be the one with the
+largest strike.
+
+•
+𝑝𝑚𝑎𝑥 é a opção put de posição vendida (quantidade < 0) e cujo delta é o menor das opções
+put.
+𝑝𝑚𝑎𝑥 be the short put option (quantity < 0) which delta is the smallest among the put options;
+o Se houver mais de uma opção nesta condição, 𝑝𝑚𝑎𝑥 é aquela de maior preço de
+exercício.
+Existing more than one option with the smallest delta, let 𝑝𝑚𝑎𝑥 be the one with the
+largest strike.
+
+3.
+
+Considere que δ é um parâmetro do sistema igual a (e.g. 10%). Se 𝛿𝑐𝑚𝑖𝑛 > δ e 𝛿𝑝𝑚𝑎𝑥 < −δ, o processo deve ser encerrado.
+Let δ be a system parameter (e.g. 10%). If 𝛿𝑐𝑚𝑖𝑛 > δ and 𝛿𝑝𝑚𝑎𝑥 < −δ this process should be finished.
+
+4.
+
+Identifique as posições “fora do dinheiro”, denotadas por:
+May “out-of-the-money” positions be as follows:
+•
+𝐶𝛿 : as opções call com delta < 𝛿 e
+𝐶𝛿 : call options with delta < 𝛿 and
+•
+𝑃𝛿 : as opções put com delta > −𝛿;
+73
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝛿 : put options with delta > −𝛿;
+5.
+
+Calcule o valor financeiro das posições “fora do dinheiro” 𝑀(𝐶𝛿 ) e 𝑀(𝑃𝛿 ):
+Calculate “out-of-the-money” positions financial amount 𝑀(𝐶𝛿 ) and 𝑀(𝑃𝛿 ):
+𝑀(𝐶𝛿 ) = ∑ 𝑃 (𝐶𝛿 )
+𝑀(𝑃𝛿 ) = ∑ 𝑃 (𝑃𝛿 )
+6.
+
+Para a opção 𝑐𝑚𝑖𝑛 , calcular o ativo-objeto em função do delta (ver Fórmulas de Delta de Opções neste
+documento), considerando-se Δ=δ, onde δ é um parâmetro do sistema (e.g. 10%):
+Calculate the underlying value from the 𝑐𝑚𝑖𝑛 option delta (see Option Delta Formulas in this Document), considering Δ=δ, where δ is a system parameter (e.g. 10%):
+𝑆𝑐𝑚𝑖𝑛 = 𝑆𝐺 (𝜹; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+7.
+
+Calcular o prêmio da opção 𝑐𝑚𝑖𝑛 , utilizando-se o ativo-objeto obtido no passo anterior, respeitando-se
+a fórmula de apreçamento mapeada para o contrato em questão (ver Fórmulas de Apreçamento
+neste documento):
+Calculate the 𝑐𝑚𝑖𝑛 option premium, considering the underlying value from the previous step, and the
+pricing formula related to this option contract (see Pricing Formulas in this document):
+𝑃𝑐𝑚𝑖𝑛 = 𝑃(𝑺𝒄𝒎𝒊𝒏 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+8.
+
+Para a opção 𝑝𝑚𝑎𝑥 , calcular o ativo-objeto em função do delta (ver Fórmulas de Delta de Opções neste
+documento), considerando-se Δ=δ, onde δ é um parâmetro do sistema (e.g. 10%):
+Calculate the underlying value from the 𝑝𝑚𝑎𝑥 option delta (see Option Delta Formulas in this Document), considering Δ=δ, where δ is a system parameter (e.g. 10%):
+𝑆𝑝𝑚𝑎𝑥 = 𝑆𝐺 (𝜹; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+9.
+
+Calcular o prêmio da opção 𝑝𝑚𝑎𝑥 , utilizando-se o ativo-objeto obtido no passo anterior, respeitandose a fórmula de apreçamento mapeada para o contrato em questão (ver Fórmulas de Apreçamento
+neste documento):
+Calculate the 𝑝𝑚𝑎𝑥 option premium, considering the underlying value from the previous step, and the
+pricing formula related to this option contract (see Pricing Formulas in this document):
+𝑃𝑝𝑚𝑎𝑥 = 𝑃(𝑺𝒑𝒎𝒂𝒙 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+10. Para cada posição comprada em opção call 𝑐𝑖 (quantidade > 0) cujo delta 𝛿𝑐𝑖 < 𝛿, calcular o prêmio
+utilizando-se o ativo-objeto 𝑆𝑐𝑚𝑖𝑛 :
+For each long call position 𝑐𝑖 (quantity > 0) with delta 𝛿𝑐𝑖 < 𝛿, calculate its premium considering the
+underlying value 𝑆𝑐𝑚𝑖𝑛 :
+𝑃𝑐𝑖 = max(𝑃(𝑆𝑐𝑚𝑖𝑛 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑); 𝑃𝑐𝑖 )
+11. Para cada posição comprada em opção put 𝑝𝑖 (quantidade > 0) cujo delta 𝛿𝑝𝑖 > −𝛿, calcular o prêmio
+utilizando-se o ativo-objeto 𝑆𝑝𝑚𝑎𝑥 :
+For each long call position 𝑐𝑖 (quantity > 0) with delta 𝛿𝑐𝑖 < 𝛿, calculate its premium considering the
+underlying value 𝑆𝑐𝑚𝑖𝑛 :
+74
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑃𝑝𝑖 = max(𝑃(𝑆𝑝𝑚𝑎𝑥 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑); 𝑃𝑝𝑖 )
+12. Para cada posição vendida em opção call 𝑐𝑖 (quantidade < 0) cujo delta 𝛿𝑐𝑖 < 𝛿, calcular o ativo-objeto
+em função do delta (ver Fórmulas de Delta de Opções neste documento), considerando-se Δ=δ, onde
+δ é um parâmetro do sistema (e.g. 10%):
+For each short call position 𝑐𝑖 (quantity < 0) with delta 𝛿𝑐𝑖 < 𝛿, calculate the underlying value from its
+delta (see Option Delta Formulas in this Document), considering Δ=δ, where δ is a system parameter
+(e.g. 10%):
+𝑆𝑐𝑖 = 𝑆𝐺 (𝜹; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+13. Calcular o prêmio da opção 𝑐𝑖 , utilizando-se o ativo-objeto obtido no passo anterior, respeitando-se a
+fórmula de apreçamento mapeada para o contrato em questão (ver Fórmulas de Apreçamento neste
+documento):
+Calculate the 𝑐𝑖 option premium, considering the underlying value from the previous step, and the pricing formula related to this option contract (see Pricing Formulas in this document):
+𝑃𝑐𝑖 = 𝑃(𝑆𝑐𝑖 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+14. Para cada posição vendida em opção put 𝑝𝑖 (quantidade < 0) cujo delta 𝛿𝑝𝑖 > −𝛿, calcular o ativoobjeto em função do delta (ver Fórmulas de Delta de Opções neste documento), considerando-se Δ=δ,
+onde δ é um parâmetro do sistema (e.g. 10%):
+For each long put position 𝑝𝑖 (quantity < 0) with delta 𝛿𝑝𝑖 > −𝛿, calculate the underlying value from
+its delta (see Option Delta Formulas in this Document), considering Δ=δ, where δ is a system parameter (e.g. 10%):
+𝑆𝑝𝑖 = 𝑆𝐺 (𝜹; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+15. Calcular o prêmio da opção 𝑝𝑖 , utilizando-se o ativo-objeto obtido no passo anterior, respeitando-se a
+fórmula de apreçamento mapeada para o contrato em questão (ver Fórmulas de Apreçamento neste
+documento):
+Calculate the 𝑝𝑖 option premium, considering the underlying value from the previous step, and the
+pricing formula related to this option contract (see Pricing Formulas in this document):
+𝑃𝑝𝑖 = 𝑃(𝑆𝑝𝑖 ; 𝐾; 𝑖; 𝑐; 𝜎; 𝑇; 𝜑)
+16. Calcular o valor financeiro das posições “fora do dinheiro” reavaliadas nos passos anteriores 𝑀∗ (𝐶𝛿 ) e
+𝑀∗ (𝑃𝛿 );
+Calculate the financial amount 𝑀∗ (𝐶𝛿 ) and 𝑀∗ (𝑃𝛿 ) from the “out-of-the-money” positions reassessed
+in the previous steps;
+17. Denotando por 𝑀′ o valor financeiro das posições “dentro do dinheiro”, que não foram reavaliadas
+nos passos anteriores, a margem mínima da carteira de opções é definida como:
+Let 𝑀′ be the financial amount of the “in-the-money” positions, not assessed in the previous steps. The
+Option Minimum Margin Call is given by:
+𝑀 = 𝑀′ + min(𝑀∗ (𝐶𝛿 ); 𝑀(𝐶𝛿 )) + min(𝑀∗ (𝑃𝛿 ); 𝑀(𝑃𝛿 ))
+75
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+76
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+7. Fórmulas Auxiliares / Additional Formulas
+7.1.
+
+Distribuição Normal / Normal Distribution
+a) Distribuição Normal Padrão Univariada Acumulada
+Cumulative Standard Normal Distribution
+𝑒 −𝑦
+N(𝑥) =
+2 ⁄2
+−𝑦 2⁄2
+× 𝐴⁄𝐵 ,
+𝑒
+,
+𝐶 × 𝑐1
+0,
+{
+se 𝑦 < 𝑧
+se 𝑧 ≤ 𝑦 < 37
+se 𝑦 > 37
+𝐴 = (((((𝑎1 × 𝑦 + 𝑎2 ) × 𝑦 + 𝑎3 ) × 𝑦 + 𝑎4 ) × 𝑦 + 𝑎5 ) × 𝑦 + 𝑎6 ) × 𝑦 + 𝑎7
+𝐵 = ((((((𝑏1 × 𝑦 + 𝑏2 ) × 𝑦 + 𝑏3 ) × 𝑦 + 𝑏4 ) × 𝑦 + 𝑏5 ) × 𝑦 + 𝑏6 ) × 𝑦 + 𝑏7 ) 𝑦 + 𝑏8
+𝐶 = 𝑦 + 1⁄(𝑦 + 2⁄(𝑦 + 3⁄(𝑦 + 4⁄(𝑦 + 0,65))))
+Onde:
+𝑦 = |𝑥|
+𝑎1 = 0,0352624965998911
+𝑎2 = 0,700383064443688
+𝑎3 = 6,37396220353165
+𝑎4 = 33,912866078383
+𝑎5 = 112,079291497871
+𝑎6 = 221,213596169931
+𝑎7 = 220,206867912376
+𝑏1 = 0,0883883476483184
+𝑏2 = 1,75566716318264
+𝑏3 = 16,064177579207
+𝑏4 = 86,7807322029461
+𝑏5 = 296,564248779674
+𝑏6 = 637,333633378831
+𝑏7 = 793,826512519948
+𝑏8 = 440,413735824752
+𝑐1 = 2,506628274631
+𝑧 = 7,07106781186547
+b) Função Densidade da Distribuição Normal Padrão
+Standard Normal Distribution Density Function
+N′(𝑥) =
+1
+√2𝜋
+×𝑒
+−𝑥 2⁄
+2
+c) Distribuição Normal Padrão Bivariada Acumulada
+77
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+Cumulative Bivariate Standard Normal Distribution
+M(𝑎, 𝑏, 𝜌) = CBND
+Código Visual Basic para CBND:
+Visual Basic code for CBND:
+Public Function CBND(X As Double, y As Double, rho As Double) As Double
+Dim i As Integer, ISs As Integer, LG As Integer, NG As Integer
+Dim xx(10, 3) As Double, W(10, 3) As Double
+Dim H As Double, k As Double, hk As Double, hs As Double, BVN As Double, Ass As
+Double, asr As Double, sn As Double
+Dim a As Double, b As Double, bs As Double, c As Double, d As Double
+Dim xs As Double, rs As Double
+W(1, 1) = 0.17132449237917
+xx(1, 1) = -0.932469514203152
+W(2, 1) = 0.360761573048138
+xx(2, 1) = -0.661209386466265
+W(3, 1) = 0.46791393457269
+xx(3, 1) = -0.238619186083197
+W(1, 2) = 4.71753363865118E-02
+xx(1, 2) = -0.981560634246719
+W(2, 2) = 0.106939325995318
+xx(2, 2) = -0.904117256370475
+W(3, 2) = 0.160078328543346
+xx(3, 2) = -0.769902674194305
+W(4, 2) = 0.203167426723066
+xx(4, 2) = -0.587317954286617
+W(5, 2) = 0.233492536538355
+xx(5, 2) = -0.36783149899818
+W(6, 2) = 0.249147045813403
+xx(6, 2) = -0.125233408511469
+W(1, 3) = 1.76140071391521E-02
+xx(1, 3) = -0.993128599185095
+W(2, 3) = 4.06014298003869E-02
+xx(2, 3) = -0.963971927277914
+W(3, 3) = 6.26720483341091E-02
+xx(3, 3) = -0.912234428251326
+W(4, 3) = 8.32767415767048E-02
+xx(4, 3) = -0.839116971822219
+W(5, 3) = 0.10193011981724
+xx(5, 3) = -0.746331906460151
+W(6, 3) = 0.118194531961518
+xx(6, 3) = -0.636053680726515
+W(7, 3) = 0.131688638449177
+xx(7, 3) = -0.510867001950827
+W(8, 3) = 0.142096109318382
+xx(8, 3) = -0.37370608871542
+W(9, 3) = 0.149172986472604
+xx(9, 3) = -0.227785851141645
+W(10, 3) = 0.152753387130726
+xx(10, 3) = -7.65265211334973E-02
+If Abs(rho) < 0.3 Then
+NG = 1
+LG = 3
+ElseIf Abs(rho) < 0.75 Then
+78
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+NG =
+LG =
+Else
+NG =
+LG =
+End If
+2
+6
+3
+10
+H = -X
+k = -y
+hk = H * k
+BVN = 0
+If Abs(rho) < 0.925 Then
+If Abs(rho) > 0 Then
+hs = (H * H + k * k) / 2
+asr = ArcSin(rho)
+For i = 1 To LG
+For ISs = -1 To 1 Step 2
+sn = Sin(asr * (ISs * xx(i, NG) + 1) / 2)
+BVN = BVN + W(i, NG) * Exp((sn * hk - hs) / (1 - sn * sn))
+Next ISs
+Next i
+BVN = BVN * asr / (4 * Pi)
+End If
+BVN = BVN + CND(-H) * CND(-k)
+Else
+If rho < 0 Then
+k = -k
+hk = -hk
+End If
+If Abs(rho) < 1 Then
+Ass = (1 - rho) * (1 + rho)
+a = Sqr(Ass)
+bs = (H - k) ^ 2
+c = (4 - hk) / 8
+d = (12 - hk) / 16
+asr = -(bs / Ass + hk) / 2
+If asr > -100 Then BVN = a * Exp(asr) * (1 - c * (bs - Ass) * (1 - d * bs / 5)
+/ 3 + c * d * Ass * Ass / 5)
+If -hk < 100 Then
+b = Sqr(bs)
+BVN = BVN - Exp(-hk / 2) * Sqr(2 * Pi) * CND(-b / a) * b * (1 - c * bs * (1 d * bs / 5) / 3)
+End If
+a = a / 2
+For i = 1 To LG
+For ISs = -1 To 1 Step 2
+xs = (a * (ISs * xx(i, NG) + 1)) ^ 2
+rs = Sqr(1 - xs)
+asr = -(bs / xs + hk) / 2
+If asr > -100 Then
+BVN = BVN + a * W(i, NG) * Exp(asr) * (Exp(-hk * (1 - rs) / (2 * (1 +
+rs))) / rs - (1 + c * xs * (1 + d * xs)))
+End If
+Next ISs
+Next i
+BVN = -BVN / (2 * Pi)
+End If
+If rho > 0 Then
+BVN = BVN + CND(-Max(H, k))
+Else
+BVN = -BVN
+If k > H Then BVN = BVN + CND(k) - CND(H)
+End If
+End If
+79
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+CBND = BVN
+End Function
+d) Distribuição Normal Inversa Acumulada
+Inverse Cumulative Normal Distribution
+N −1 (𝑥) = CNDEV
+Código Visual Basic para CNDEV:
+Visual Basic code for CBND:
+Public Function CNDEV(U As Double) As Double
+Dim X As Double, r As Double
+Dim A As Variant, b As Variant, c As Variant
+A = Array(2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637)
+b = Array(-8.4735109309, 23.08336743743, -21.06224101826, 3.13082909833)
+c = Array(0.337475482272615, 0.976169019091719, 0.160797971491821,
+2.76438810333863E-02, 3.8405729373609E-03, 3.951896511919E-04, 3.21767881767818E05, 2.888167364E-07, 3.960315187E-07)
+X = U - 0.5
+If Abs(X) < 0.92 Then
+r = X * X
+r = X * (((A(3) * r + A(2)) * r + A(1)) * r + A(0)) _
+/ ((((b(3) * r + b(2)) * r + b(1)) * r + b(0)) * r + 1)
+CNDEV = r
+Exit Function
+End If
+r = U
+If X >= 0 Then r = 1 - U
+r = Log(-Log(r))
+r = c(0) + r * (c(1) + r * (c(2) + r * (c(3) + r + (c(4) + _
+r * (c(5) + r * (c(6) + r * (c(7) + r * c(8))))))))
+If X < 0 Then r = -r
+CNDEV = r
+End Function
+7.2.
+
+Conversão de Taxas / Rate Conversion
+a) Conversão de Taxa ao Período para Taxa Continuamente Composta
+Continuously Compounded Interest Rate
+𝑖𝑐𝑐 (𝑖; 𝑡𝑗 ; 𝑇) = ln(𝑖) × 𝑇⁄𝑡𝑗
+Onde:
+𝑖𝑐𝑐 : Taxa continuamente composta [continuously compounded interest rate];
+𝑖: Taxa expressa ao período (em fator) [interest rate];
+80
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑡𝑗 : Quantidade de dias referente ao prazo j [maturity];
+dias de saque, se 𝑇 = 252
+𝑡𝑗 = {
+dias corridos, se 𝑇 = 360
+𝑇: Base da curva [curve base code].
+
+b) Conversão de Taxa ao Ano para Taxa ao Período – capitalização simples
+Simple Capitalization Interest Rate
+𝑖𝑠 (𝑖𝑗 ; 𝑡𝑗 ; 𝑇) = 𝑖𝑗 × 𝑡𝑗 ⁄𝑇 + 1
+Onde:
+𝑖: Taxa no período (em fator) [accrued interest rate];
+𝑖𝑗 : Taxa expressa ao ano, em percentual, no prazo j [annual interest rate];
+𝑡𝑗 : Quantidade de dias referente ao prazo j [maturity];
+dias de saque, se 𝑇 = 252
+𝑡𝑗 = {
+dias corridos, se 𝑇 = 360
+𝑇: Base da curva [curve base code].
+
+c) Conversão de Taxa ao Ano para Taxa ao Período – capitalização composta
+Composed Capitalization Interest Rate
+𝑡𝑗
+⁄𝑇
+𝑖𝑐 (𝑖; 𝑡𝑗 ; 𝑇) = (1 + 𝑖𝑗 )
+Onde:
+𝑖: Taxa no período (em fator) [accrued interest rate];
+𝑖𝑗 : Taxa expressa ao ano, em percentual, no prazo j [annual interest rate];
+dias de saque, se 𝑇 = 252
+𝑡𝑗 = {
+dias corridos, se 𝑇 = 360
+𝑇: Base da curva [curve base code].
+
+7.3.
+
+Interpolação / Interpolation
+a) Interpolação Forward de Curva a Termo
+Forward Based Interpolation
+𝑉𝑗+1
+𝑉 = 𝑉𝑗 × (
+)
+𝑉𝑗
+𝑡−𝑡𝑗
+(
+)
+𝑡𝑗+1 −𝑡𝑗
+Onde:
+𝑉: Valor do Vértice (preço ou fator ao período) referente ao prazo-alvo [target maturity value];
+81
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑉𝑗 : Valor do Vértice no prazo j (preço ou fator ao período de acordo com a base da curva), imediatamente anterior ao prazo-alvo [preceding value];
+𝑉𝑗+1 : Valor do Vértice no prazo j+1 (preço ou fator ao período de acordo com a base da curva), imediatamente
+posterior ao prazo-alvo [posterior value];
+𝑡: Quantidade de dias do Vértice referente ao prazo-alvo [target maturity];
+dias de saque, se 𝑇 = 252
+𝑡={
+dias corridos, se 𝑇 = 360
+𝑡𝑗 : Quantidade de dias do Vértice imediatamente anterior ao prazo-alvo [preceding maturity];
+dias de saque, se 𝑇 = 252
+𝑡𝑗 = {
+dias corridos, se 𝑇 = 360
+𝑡𝑗+1 : Quantidade de dias do Vértice imediatamente posterior ao prazo-alvo [posterior maturity];
+dias de saque, se 𝑇 = 252
+𝑡𝑗+1 = {
+dias corridos, se 𝑇 = 360
+𝑇: Base de interpolação [interpolation base code].
+
+b) Interpolação Spline Cúbico Natural de Curva a Termo
+Cubic Spline Based Interpolation
+A interpolação por Spline Cúbico Natural deve ser realizada para encontrar-se o valor de um determinado vértice de índice x a partir de uma lista de vértices ordenada por índice, conforme segue:
+Cubic Spline based interpolation is performed to find a value from a given vertex from a verteces ordered array,
+as follows:
+𝜎(𝑥) = 𝑠𝑝𝑙𝑖𝑛𝑒{[𝜎(𝑦1 ), 𝜎(𝑦2 ), 𝜎(𝑦3 ), … , 𝜎(𝑦𝑁 )]; 𝑥}
+Onde:
+Where:
+𝜎(𝑥): Valor do vértice de índice x [vertex value at index x];
+𝜎(𝑦𝑛 ): Valor do n-ésimo vértice da lista de vértices ordenada por índice [vertex value at index 𝑦𝑛 ];
+𝑁: Número de vértices da lista [Number of verteces];
+𝑥: Índice do vértice-alvo da interpolação por Spline Cúbico Natural [interpolation target index].
+Para o cálculo do Spline, considere duas listas de vértices auxiliares 𝜎′′(𝑦) e 𝑢(𝑦), de mesmo tamanho da lista
+original (N vértices), com os mesmos índices, ou seja:
+Consider two auxiliary verteces arrays, both with the same length and indeces as the previous one, as follows:
+[𝜎′′(𝑦1 ), 𝜎′′(𝑦2 ), 𝜎′′(𝑦3 ), … , 𝜎′′(𝑦𝑁 )]
+[𝑢(𝑦1 ), 𝑢(𝑦2 ), 𝑢(𝑦3 ), … , 𝑢(𝑦𝑁 )]
+O cálculo deve ser realizado conforme os passos abaixo:
+The calculation is performed according to the following steps:
+1.
+
+Considere, para os primeiros e últimos vértices das listas auxiliares:
+Define, for the first and last verteces of the auxiliary arrays:
+𝜎′′(𝑦1 ) = 0
+𝑢(𝑦1 ) = 0
+𝜎′′(𝑦𝑁 ) = 0
+82
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+𝑢(𝑦𝑁 ) = 0
+2.
+
+Para cada vértice n da lista original, a partir do segundo (𝜎′′(𝑦2 )) até o penúltimo (𝜎′′(𝑦𝑁−1 )):
+For each n vertex from the first array, from the second (𝜎′′(𝑦2 )) through the N-1-th (𝜎′′(𝑦𝑁−1 )):
+𝑠(𝑛) =
+𝑦𝑛 − 𝑦𝑛−1
+𝑦𝑛+1 − 𝑦𝑛−1
+𝑝(𝑛) = 𝑠(𝑛) × 𝜎′′(𝑦𝑛−1 ) + 2
+𝜎′′(𝑦𝑛 ) =
+𝑢(𝑦𝑛 ) =
+𝑠(𝑛) − 1
+𝑝(𝑛)
+𝜎(𝑦𝑛+1 ) − 𝜎(𝑦𝑛 ) 𝜎(𝑦𝑛 ) − 𝜎(𝑦𝑛−1 )
+−
+𝑦𝑛+1 − 𝑦𝑛
+𝑦𝑛 − 𝑦𝑛−1
+6 × 𝑢(𝑦𝑛 )
+)
+𝑦𝑛+1 − 𝑦𝑛−1 − 𝑠(𝑛) × 𝑢(𝑦𝑛−1
+𝑢(𝑦𝑛 ) =
+𝑝(𝑛)
+3.
+
+Para cada vértice n da lista auxiliar 𝜎′′(𝑦), a partir do penúltimo (𝜎′′(𝑦𝑁−1 )) até o segundo (𝜎′′(𝑦2 )),
+em ordem decrescente:
+For each vertex n from the 𝜎′′(𝑦) auxiliary list, from the N-1-th (𝜎′′(𝑦𝑁−1 )) through the second
+(𝜎′′(𝑦2 )), in descending order:
+𝜎′′(𝑦𝑛 ) = 𝜎′′(𝑦𝑛 ) × 𝜎′′(𝑦𝑛+1 ) + 𝑢(𝑦𝑛 )
+4.
+
+Realize os seguintes cálculos:
+Perform calculation as follows:
+𝐴=
+𝑦𝑥+1 − 𝑥
+𝑦𝑥+1 − 𝑦𝑥−1
+𝐵 =1−𝐴
+𝐶 = 1⁄6 × (𝐴3 − 𝐴) × (𝑦𝑥+1 − 𝑦𝑥−1 )2
+𝐷 = 1⁄6 × (𝐵3 − 𝐵) × (𝑦𝑥+1 − 𝑦𝑥−1 )2
+𝜎(𝑥) = 𝐴 × 𝜎(𝑦𝑥−1 ) + 𝐵 × 𝜎(𝑦𝑥+1 ) + 𝐶 × 𝜎′′(𝑦𝑥−1 ) + 𝐷 × 𝜎′′(𝑦𝑥+1 )
+Onde:
+Where:
+𝑥: Índice do vértice-alvo da interpolação [target vertex index];
+𝑦𝑥+1 : Índice do vértice imediatamente posterior a x [posterior index];
+𝑦𝑥−1 : Índice do vértice imediatamente anterior a x [preceeding index];
+𝜎 ′′ (𝑦𝑥+1 ): Valor do vértice imediatamente posterior a x da lista auxiliar 𝜎 ′′ (𝑦) [posterior value];
+𝜎 ′′ (𝑦𝑥−1 ): Valor do vértice imediatamente anterior a x da lista auxiliar 𝜎 ′′ (𝑦) [preceeding value];
+𝜎(𝑥): Valor do vértice-alvo da interpolação [target vertex value].
+Obs.:
+83
+Versão 1.8 / Version 1.8
+CORE – Closeout Risk Evaluation
+Março de 2018 / March 2018
+•
+•
+•
+•
+7.4.
+
+Se 𝑥 < 𝑦1 ⇒ 𝜎(𝑥) = 𝜎(𝑦1 )
+Se 𝑥 > 𝑦𝑁 ⇒ 𝜎(𝑥) = 𝜎(𝑦𝑁 )
+Se 𝜎(𝑥) < min[𝜎(𝑦1 ), 𝜎(𝑦2 ), 𝜎(𝑦3 ), … , 𝜎(𝑦𝑁 )] ⇒ 𝜎(𝑥) = min[𝜎(𝑦1 ), 𝜎(𝑦2 ), 𝜎(𝑦3 ), … , 𝜎(𝑦𝑁 )]
+Se 𝜎(𝑥) > max[𝜎(𝑦1 ), 𝜎(𝑦2 ), 𝜎(𝑦3 ), … , 𝜎(𝑦𝑁 )] ⇒ 𝜎(𝑥) = max[𝜎(𝑦1 ), 𝜎(𝑦2 ), 𝜎(𝑦3 ), … , 𝜎(𝑦𝑁 )]
+Barreira de Opções Flexíveis / Flexible Option Barrier
+a) Ajuste em Barreira de Opções Flexíveis
+Flexible Option Adjusted Barrier
+𝐻 × 𝑒 𝛽×𝜎×√𝑇 , se 𝐻 > 𝑆
+𝐻′(𝐻, 𝑆, 𝜎) = {
+𝐻 × 𝑒 −𝛽×𝜎×√𝑇 , se 𝐻 < 𝑆
+Onde:
+𝐻 ′ (. ): Barreira ajustada da opção [option adjusted barrier];
+𝐻: Valor da barreira da opção [barrier value];
+𝑆: Valor do ativo-objeto da opção [option underlying];
+𝜎: Volatilidade da opção [volatility];
+𝛽 = 0,5826
+𝑇 = 1/252
+84
+
