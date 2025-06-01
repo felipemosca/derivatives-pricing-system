@@ -1,44 +1,46 @@
-# Derivatives Pricing System
+# Derivatives Pricing System / Sistema de Precificação de Derivativos
 
-## Overview
+## Overview / Visão Geral
 This is a comprehensive Java-based system for pricing and analyzing financial derivatives, supporting:
-- Options (Call and Put)
-- Futures Contracts
-- Advanced Volatility Calculations
+Sistema abrangente em Java para precificação e análise de derivativos financeiros, com suporte a:
 
-## Features
-- Black-Scholes Option Pricing Model
-- Cost of Carry Future Pricing
-- Historical Volatility Calculation
-- GARCH Volatility Estimation
-- Implied Volatility Calculation
+- Options (Call and Put) / Opções (Compra e Venda)
+- Futures Contracts / Contratos Futuros
+- Advanced Volatility Calculations / Cálculos Avançados de Volatilidade
 
-## Prerequisites
+## Features / Recursos
+- Black-Scholes Option Pricing Model / Modelo Black-Scholes para Opções
+- Cost of Carry Future Pricing / Precificação de Futuros por Custo de Carregamento
+- Historical Volatility Calculation / Cálculo de Volatilidade Histórica
+- GARCH Volatility Estimation / Estimativa de Volatilidade GARCH
+- Implied Volatility Calculation / Cálculo de Volatilidade Implícita
+
+## Prerequisites / Pré-requisitos
 - Java 17+
 - Maven
 
-## Running the Application
+## Running the Application / Executando a Aplicação
 ```bash
 mvn clean install
 mvn exec:java -Dexec.mainClass="com.financialengineering.DerivativesPricingApp"
 ```
 
-## Key Components
-- `Derivative`: Abstract base class for all derivatives
-- `Option`: Call and Put option pricing
-- `Future`: Future contract pricing
-- `VolatilityCalculator`: Advanced volatility estimation techniques
+## Key Components / Componentes Principais
+- `Derivative`: Classe base abstrata para todos os derivativos
+- `Option`: Precificação de opções de compra e venda
+- `Future`: Precificação de contratos futuros
+- `VolatilityCalculator`: Técnicas avançadas de estimativa de volatilidade
 
-## Supported Calculations
-1. Option Pricing
-2. Future Contract Pricing
-3. Historical Volatility
-4. GARCH Volatility
-5. Implied Volatility
+## Supported Calculations / Cálculos Suportados
+1. Option Pricing / Precificação de Opções
+2. Future Contract Pricing / Precificação de Contratos Futuros
+3. Historical Volatility / Volatilidade Histórica
+4. GARCH Volatility / Volatilidade GARCH
+5. Implied Volatility / Volatilidade Implícita
 
-## Limitations
-- Simplified models for educational and demonstration purposes
-- Real-world implementations would require more sophisticated statistical techniques
+## Limitations / Limitações
+- Modelos simplificados para fins educacionais e de demonstração
+- Implementações do mundo real exigiriam técnicas estatísticas mais sofisticadas
 
-## License
+## License / Licença
 MIT License
